@@ -62,7 +62,7 @@ class TestCaseScriptInfoAdmin(admin.ModelAdmin):
     ordering = ('-create_time',)
     list_display_links = ('script_desc',)
     # 筛选器
-    list_filter = ('script_name', )  # 过滤器
+    list_filter = ('operate_type', )  # 过滤器
     search_fields = ('script_desc', 'operate_type')  # 搜索字段
     date_hierarchy = 'update_time'  # 详细时间分层筛选
 
