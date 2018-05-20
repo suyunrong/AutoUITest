@@ -46,7 +46,7 @@ class ModuleInfo(BaseModel):
     module_name = models.CharField('模块名称', max_length=64)
     belong_project = models.ForeignKey(Projectinfo, on_delete=models.CASCADE)
     test_user = models.CharField('测试人员', max_length=120)
-    simple_desc = models.CharField('简要描述', max_length=120)
+    simple_desc = models.CharField('简要描述', max_length=120, null=True)
 
     def __str__(self):
         return self.module_name
@@ -59,7 +59,9 @@ class TestCaseInfo(BaseModel):
         db_table = 'TestCaseInfo'
     case_name = models.CharField('用例名称', max_length=200)
     belong_module = models.ForeignKey(ModuleInfo, on_delete=models.CASCADE)
-    case_desc = models.CharField('用例描述', max_length=240)
+    case_desc = models.TextField('用例描述')
+    author = models.CharField('所有者', max_length=32)
+    is_execute = models.BooleanField('是否执行')
 
     def __str__(self):
         return self.case_name
@@ -71,7 +73,13 @@ class TestCaseScriptInfo(BaseModel):
         verbose_name = '测试脚本信息'
         db_table = 'TestCaseScriptInfo'
     belong_module = models.ForeignKey(TestCaseInfo, on_delete=models.CASCADE)
-    script_name = models.CharField('脚本名称', max_length=200)
+    script_desc = models.TextField('脚本描述')
+    script_step = models.IntegerField('操作步骤', default=1)
+    operate_type = models.CharField('操作类型', max_length=32)
+    element_pos = models.TextField('元素定位')
+    operate_val = models.TextField('操作值', null=True)
+    expect_val = models.TextField('预期结果', null=True)
+    sleep_time = models.IntegerField('睡眠时间', default=0)
 
 
 # 测试环境模型

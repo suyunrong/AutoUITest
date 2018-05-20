@@ -44,25 +44,26 @@ class ModuleInfoAdmin(admin.ModelAdmin):
 
 @admin.register(TestCaseInfo)
 class TestCaseInfoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'case_name', 'case_desc', 'create_time', 'update_time')
+    list_display = ('id', 'case_name', 'case_desc', 'author', 'is_execute', 'create_time', 'update_time')
     list_per_page = 10
     ordering = ('-create_time',)
     list_display_links = ('case_name',)
     # 筛选器
-    list_filter = ('case_name', )  # 过滤器
-    search_fields = ('case_name', )  # 搜索字段
+    list_filter = ('case_name', 'author', 'is_execute')  # 过滤器
+    search_fields = ('case_name', 'author')  # 搜索字段
     date_hierarchy = 'update_time'  # 详细时间分层筛选
 
 
 @admin.register(TestCaseScriptInfo)
 class TestCaseScriptInfoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'script_name', 'create_time', 'update_time')
+    list_display = ('id', 'script_desc', 'script_step', 'operate_type', 'element_pos', 'operate_val',
+                    'expect_val', 'sleep_time', 'create_time', 'update_time')
     list_per_page = 10
     ordering = ('-create_time',)
-    list_display_links = ('script_name',)
+    list_display_links = ('script_desc',)
     # 筛选器
     list_filter = ('script_name', )  # 过滤器
-    search_fields = ('script_name', )  # 搜索字段
+    search_fields = ('script_desc', 'operate_type')  # 搜索字段
     date_hierarchy = 'update_time'  # 详细时间分层筛选
 
 
