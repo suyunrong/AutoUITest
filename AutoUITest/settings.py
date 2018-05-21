@@ -25,7 +25,7 @@ SECRET_KEY = 'o13t6=51xx3c*!t+w9gatg1+gqoxn%kq0q67t&ty@bk_aov%&x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,7 +44,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -130,4 +130,86 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),  # 静态文件额外目录
+)
 STATIC_URL = '/static/'
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
+)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s'}
+        # 日志格式
+    },
+    'filters': {
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
+        'default': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/all.log'),
+            'maxBytes': 1024 * 1024 * 100,
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'request_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/script.log'),
+            'maxBytes': 1024 * 1024 * 100,
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'scprits_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/script.log'),
+            'maxBytes': 1024 * 1024 * 100,
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['default', 'console'],
+            'level': 'INFO',
+            'propagate': True
+        },
+        'HttpRunnerManager.app': {
+            'handlers': ['default', 'console'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'django.request': {
+            'handlers': ['request_handler'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'HttpRunnerManager': {
+            'handlers': ['scprits_handler', 'console'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'scripts': {
+            'handlers': ['scprits_handler', 'console'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+    }
+}

@@ -34,8 +34,8 @@ class Projectinfo(BaseModel):
     simple_desc = models.CharField('简要描述', max_length=120, null=True)
     other_desc = models.CharField('其他描述', max_length=120, null=True)
 
-    def __str__(self):
-        return self.project_name
+    # def __unicode__(self):
+    #     return self.project_name
 
 
 # 模块模型，与项目多对一
@@ -48,8 +48,8 @@ class ModuleInfo(BaseModel):
     test_user = models.CharField('测试人员', max_length=120)
     simple_desc = models.CharField('简要描述', max_length=120, null=True)
 
-    def __str__(self):
-        return self.module_name
+    # def __unicode__(self):
+    #     return self.module_name
 
 
 # 测试用例模型
@@ -63,8 +63,8 @@ class TestCaseInfo(BaseModel):
     author = models.CharField('所有者', max_length=32)
     is_execute = models.BooleanField('是否执行')
 
-    def __str__(self):
-        return self.case_name
+    # def __unicode__(self):
+    #     return self.case_name
 
 
 # 测试脚本模型
