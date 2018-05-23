@@ -15,7 +15,6 @@ def process(request, **kwargs):
 
         # 执行view.py中的函数，并获取其返回值
         result = fun(request, index) if index else fun(request)
-        print(result)
     except (ImportError, AttributeError):
         return HttpResponse('404 Not Found')
 
