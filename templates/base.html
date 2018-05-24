@@ -33,7 +33,7 @@
 
 <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
     <div class="am-modal-dialog">
-        <div class="am-modal-hd">HttpRunnerManager</div>
+        <div class="am-modal-hd">AutoUITest</div>
         <div class="am-modal-bd" id="my-alert_print">
             Sorry，服务器可能开小差啦, 请重试!
         </div>
@@ -52,8 +52,8 @@
         <div class="sideMenu">
             <h3 class="am-icon-flag"><em></em> <a href="#">项目管理</a></h3>
             <ul>
-                <li><a href="/api/project_list/1/">项 目 列 表</a></li>
-                <li><a href="/api/add_project/">新 增 项 目</a></li>
+                <li><a href="{% url 'project_list' id=1 %}">项 目 列 表</a></li>
+                <li><a href="{% url 'add_project' %}">新 增 项 目</a></li>
             </ul>
             <h3 class="am-icon-cart-plus"><em></em> <a href="#"> 模块管理</a></h3>
             <ul>

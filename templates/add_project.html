@@ -59,7 +59,7 @@
                     <div class="am-form-group am-cf">
                         <div class="you" style="margin-left: 8%;">
                             <button type="button" class="am-btn am-btn-success am-radius" id="send"
-                                    onclick="info_ajax('#add_project', '{% url 'add_project' %}/')">点 击 提 交
+                                    onclick="info_ajax('#add_project', '{% url 'add_project' %}')">点 击 提 交
                             </button>&nbsp;
                             &raquo; &nbsp;
                             <a type="submit" href="/api/add_module/" class="am-btn am-btn-secondary am-radius">新 增 模
@@ -83,18 +83,14 @@
             data: JSON.stringify(data),
             contentType: "application/json",
             success: function (data) {
-                if (data['msg'] !== 'ok') {
-                    if (data.indexOf('/api/') !== -1) {
-                        window.location.href = data;
-                    } else {
-                        myAlert(data);
-                    }
+                if(data['msg'] === 'ok'){
+                    myAlert('项目添加成功');
+                    {#window.location.reload();#}
+                    window.location.href = data['content']
+                }else{
+                    myAlert(data['content'])
                 }
-                else {
-                    window.location.reload();
-                }
-            }
-            ,
+            },
             error: function () {
                 myAlert('Sorry，服务器可能开小差啦, 请重试!');
             }

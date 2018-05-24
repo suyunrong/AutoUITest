@@ -58,6 +58,7 @@ class TestCaseInfo(BaseModel):
         verbose_name = '测试用例信息'
         db_table = 'TestCaseInfo'
     case_name = models.CharField('用例名称', max_length=200)
+    belong_project = models.CharField('所属项目', max_length=64)
     belong_module = models.ForeignKey(ModuleInfo, on_delete=models.CASCADE)
     case_desc = models.TextField('用例描述')
     author = models.CharField('所有者', max_length=32)

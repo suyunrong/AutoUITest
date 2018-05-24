@@ -112,6 +112,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SESSION_COOKIE_AGE=60*30
+SESSION_EXPIRE_AT_BROWSER_CLOSE=False
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -175,6 +177,7 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 100,
             'backupCount': 5,
             'formatter': 'standard',
+            'encoding': 'utf8',
         },
         'scprits_handler': {
             'level': 'DEBUG',
@@ -183,6 +186,7 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 100,
             'backupCount': 5,
             'formatter': 'standard',
+            'encoding': 'utf8',
         },
     },
     'loggers': {
