@@ -48,7 +48,7 @@
 
 
         <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;"> 欢迎您：{{ account }} &nbsp;&nbsp;<a
-                href='/logout/'>注 销</a></div>
+                href='{% url 'logout' %}'>注 销</a></div>
         <div class="sideMenu">
             <h3 class="am-icon-flag"><em></em> <a href="#">项目管理</a></h3>
             <ul>
@@ -85,8 +85,8 @@
         <ul>
             <li>
                 <button type="button" class="am-btn am-btn-default am-radius am-btn-xs"
-                        onclick="location='/api/index/'">返回首页
-                    <a href="/api/index/" class="am-close am-close-spin">~</a></button>
+                        onclick="location='{% url 'index' %}'">返回首页
+                    <a href="{% url 'index' %}" class="am-close am-close-spin">~</a></button>
             </li>
             <li>
                 <button type="button" class="am-btn am-btn-default am-radius am-btn-xs"

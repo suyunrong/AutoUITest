@@ -1,6 +1,6 @@
 from django.db import DataError
 
-from data.models import UserInfo
+from data.models import UserInfo, ProjectInfo
 from utils.common import get_ajax_msg
 import logging
 
@@ -25,3 +25,15 @@ def add_register_data(**kwargs):
     except DataError:
         logger.error('信息输入有误：{user_info}'.format(user_info=user_info))
         return get_ajax_msg('sorry', '字段长度超长，请重新编辑')
+
+
+def add_project_data(**kwargs):
+    project_info = ProjectInfo.objects
+    try:
+        project_name = kwargs.pop('project_name')
+        dev_leader = kwargs.pop('dev_leader')
+        test_leader = kwargs.pop('test_leader')
+        simple_desc = kwargs.pop('simple_desc')
+        other_desc = kwargs.pop('other_desc')
+    except DataError:
+        pass

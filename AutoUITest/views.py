@@ -6,8 +6,6 @@ import json
 from utils.operation import add_register_data
 from django.http import JsonResponse
 
-# Create your views here.
-
 logger = logging.getLogger('AutoUITest')
 
 
@@ -36,6 +34,7 @@ def login(request):
             return render(request, "login.html")
     elif request.method == 'GET':
         return render(request, "login.html")
+
 
 def logout(request):
     if request.method == 'GET':
