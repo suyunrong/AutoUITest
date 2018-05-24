@@ -1,0 +1,170 @@
+2018-05-24 09:35:42,059 [django.request:93] [base:get_response] [WARNING]- Not Found: /api/register/
+2018-05-24 09:35:42,305 [django.request:93] [base:get_response] [WARNING]- Not Found: /favicon.ico
+2018-05-24 09:36:05,979 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /register/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\backends\sqlite3\base.py", line 303, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.OperationalError: no such table: UserInfo
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\AutoUITest\views.py", line 21, in register
+    if user_info.filter(username__exact=username).filter(status=1).count() > 0:
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\query.py", line 387, in count
+    return self.query.get_count(using=self.db)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\sql\query.py", line 491, in get_count
+    number = obj.get_aggregation(using, ['__count'])['__count']
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\sql\query.py", line 476, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\sql\compiler.py", line 1066, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\backends\utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\backends\utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\backends\utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\backends\utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\backends\sqlite3\base.py", line 303, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.OperationalError: no such table: UserInfo
+2018-05-24 09:38:58,346 [django.request:93] [base:get_response] [WARNING]- Not Found: /api/login/
+2018-05-24 10:21:36,013 [AutoUITest:22] [operation:add_register_data] [INFO]- 新增用户：data.UserInfo.objects
+2018-05-24 10:23:59,685 [AutoUITest:19] [operation:add_register_data] [DEBUG]- sususu 已被其他用户注册
+2018-05-24 10:24:06,926 [AutoUITest:22] [operation:add_register_data] [INFO]- 新增用户：data.UserInfo.objects
+2018-05-24 10:29:54,302 [AutoUITest:22] [operation:add_register_data] [INFO]- 新增用户：data.UserInfo.objects
+2018-05-24 10:32:38,175 [AutoUITest:23] [operation:add_register_data] [INFO]- 新增用户：data.UserInfo.objects
+2018-05-24 11:02:34,199 [AutoUITest:23] [operation:add_register_data] [INFO]- 新增用户：data.UserInfo.objects
+2018-05-24 11:02:39,411 [django.request:93] [base:get_response] [WARNING]- Not Found: /api/login/
+2018-05-24 11:07:41,909 [django.request:93] [base:get_response] [WARNING]- Not Found: /api/login/
+2018-05-24 11:12:36,581 [django.request:93] [base:get_response] [WARNING]- Not Found: /api/login/
+2018-05-24 11:13:03,788 [AutoUITest:29] [views:login] [INFO]- susu 登录成功
+2018-05-24 11:16:02,304 [AutoUITest:29] [views:login] [INFO]- susu 登录成功
+2018-05-24 11:16:02,555 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/index/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\data\views.py", line 17, in index
+    test_length = TestCaseInfo.objects.filter(type__exact=1).count()
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\query.py", line 836, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\query.py", line 854, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\sql\query.py", line 1253, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\sql\query.py", line 1277, in _add_q
+    split_subq=split_subq,
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\sql\query.py", line 1153, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\sql\query.py", line 1015, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "D:\pythonvirtuaenv\lib\site-packages\django\db\models\sql\query.py", line 1379, in names_to_path
+    "Choices are: %s" % (name, ", ".join(available)))
+django.core.exceptions.FieldError: Cannot resolve keyword 'type' into field. Choices are: author, belong_module, belong_module_id, case_desc, case_name, create_time, id, is_execute, testcasescriptinfo, update_time
+2018-05-24 11:28:36,833 [django.request:93] [base:get_response] [WARNING]- Not Found: /log_out/
+2018-05-24 11:28:47,970 [django.request:93] [base:get_response] [WARNING]- Not Found: /log_out/
+2018-05-24 11:28:51,685 [AutoUITest:42] [views:logout] [INFO]- susu退出
+2018-05-24 11:28:56,259 [AutoUITest:29] [views:login] [INFO]- susu 登录成功
+2018-05-24 11:28:59,556 [AutoUITest:42] [views:logout] [INFO]- susu退出
+2018-05-24 11:29:04,114 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/index/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\data\views.py", line 24, in index
+    'account': request.session["now_account"]
+  File "D:\pythonvirtuaenv\lib\site-packages\django\contrib\sessions\backends\base.py", line 55, in __getitem__
+    return self._session[key]
+KeyError: 'now_account'
+2018-05-24 11:29:05,443 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/index/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\data\views.py", line 24, in index
+    'account': request.session["now_account"]
+  File "D:\pythonvirtuaenv\lib\site-packages\django\contrib\sessions\backends\base.py", line 55, in __getitem__
+    return self._session[key]
+KeyError: 'now_account'
+2018-05-24 11:29:05,698 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/index/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\data\views.py", line 24, in index
+    'account': request.session["now_account"]
+  File "D:\pythonvirtuaenv\lib\site-packages\django\contrib\sessions\backends\base.py", line 55, in __getitem__
+    return self._session[key]
+KeyError: 'now_account'
+2018-05-24 11:29:05,842 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/index/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\data\views.py", line 24, in index
+    'account': request.session["now_account"]
+  File "D:\pythonvirtuaenv\lib\site-packages\django\contrib\sessions\backends\base.py", line 55, in __getitem__
+    return self._session[key]
+KeyError: 'now_account'
+2018-05-24 11:29:12,230 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/index/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\data\views.py", line 24, in index
+    'account': request.session["now_account"]
+  File "D:\pythonvirtuaenv\lib\site-packages\django\contrib\sessions\backends\base.py", line 55, in __getitem__
+    return self._session[key]
+KeyError: 'now_account'
+2018-05-24 11:31:06,972 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/index/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\data\views.py", line 24, in index
+    'account': request.session["now_account"]
+  File "D:\pythonvirtuaenv\lib\site-packages\django\contrib\sessions\backends\base.py", line 55, in __getitem__
+    return self._session[key]
+KeyError: 'now_account'
+2018-05-24 11:31:14,484 [AutoUITest:29] [views:login] [INFO]- susu 登录成功
+2018-05-24 11:31:16,907 [AutoUITest:42] [views:logout] [INFO]- susu退出
+2018-05-24 11:33:20,288 [AutoUITest:29] [views:login] [INFO]- susu 登录成功
+2018-05-24 11:33:23,115 [AutoUITest:42] [views:logout] [INFO]- susu退出

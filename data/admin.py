@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from DataServer.models import UserInfo, Projectinfo, ModuleInfo, TestCaseInfo, TestCaseScriptInfo, EnvInfo
+from data.models import UserInfo, ProjectInfo, ModuleInfo, TestCaseInfo, TestCaseScriptInfo, EnvInfo
 
 
 @admin.register(UserInfo)
@@ -17,7 +17,7 @@ class UserInfoAdmin(admin.ModelAdmin):
     date_hierarchy = 'update_time'  # 详细时间分层筛选
 
 
-@admin.register(Projectinfo)
+@admin.register(ProjectInfo)
 class ProjectinfoAdmin(admin.ModelAdmin):
     list_display = ('id', 'project_name', 'dev_leader', 'test_leader', 'simple_desc', 'other_desc', 'create_time',
                     'update_time')

@@ -18,13 +18,13 @@ class UserInfo(BaseModel):
     class Meta:
         verbose_name = '用户信息'
         db_table = 'UserInfo'
-    username = models.CharField('用户名', max_length=12)
-    password = models.CharField('密码', max_length=12)
+    username = models.CharField('用户名', max_length=20)
+    password = models.CharField('密码', max_length=20)
     status = models.IntegerField('可用/不可用', default=1)
 
 
 # 项目模型
-class Projectinfo(BaseModel):
+class ProjectInfo(BaseModel):
     class Meta:
         verbose_name = '项目信息'
         db_table = 'Projectinfo'
@@ -34,8 +34,8 @@ class Projectinfo(BaseModel):
     simple_desc = models.CharField('简要描述', max_length=120, null=True)
     other_desc = models.CharField('其他描述', max_length=120, null=True)
 
-    # def __unicode__(self):
-    #     return self.project_name
+    def __unicode__(self):
+        return self.project_name
 
 
 # 模块模型，与项目多对一
@@ -44,12 +44,12 @@ class ModuleInfo(BaseModel):
         verbose_name = '模块信息'
         db_table = 'ModuleInfo'
     module_name = models.CharField('模块名称', max_length=64)
-    belong_project = models.ForeignKey(Projectinfo, on_delete=models.CASCADE)
+    belong_project = models.ForeignKey(ProjectInfo, on_delete=models.CASCADE)
     test_user = models.CharField('测试人员', max_length=120)
     simple_desc = models.CharField('简要描述', max_length=120, null=True)
 
-    # def __unicode__(self):
-    #     return self.module_name
+    def __unicode__(self):
+        return self.module_name
 
 
 # 测试用例模型
@@ -61,10 +61,10 @@ class TestCaseInfo(BaseModel):
     belong_module = models.ForeignKey(ModuleInfo, on_delete=models.CASCADE)
     case_desc = models.TextField('用例描述')
     author = models.CharField('所有者', max_length=32)
-    is_execute = models.BooleanField('是否执行')
+    is_execute = models.BooleanField('是否执行', default=True)
 
-    # def __unicode__(self):
-    #     return self.case_name
+    def __unicode__(self):
+        return self.case_name
 
 
 # 测试脚本模型

@@ -7,7 +7,7 @@ def process(request, **kwargs):
     index = kwargs.pop('id', None)
 
     if app == 'api':
-        app = 'DataServer'
+        app = 'data'
     try:
         app = __import__("%s.views" % app)
         view = getattr(app, 'views')

@@ -124,7 +124,7 @@
                     validators: {
                         stringLength: {
                             min: 6,
-                            max: 18,
+                            max: 16,
                             message: '密码长度必须在6到18位之间'
                         },
                         regexp: {
@@ -160,13 +160,14 @@
                 data: JSON.stringify(data),
                 contentType: "application/json",
                 success: function (data) {
-                    if (data["status"] === 'success') {
+                    if (data['msg'] === 'ok') {
+                        alert(data['content']);
                         window.location.href = '/login/';
                     } else {
                         alert(data);
                     }
                 },
-                error: function (xhr) {
+                error: function () {
                     alert('Sorry，服务器可能开小差啦, 请重试!')
                 }
             });

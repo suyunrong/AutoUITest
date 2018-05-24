@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'DataServer',
+    'data',
 ]
 
 MIDDLEWARE = [
@@ -191,7 +191,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True
         },
-        'HttpRunnerManager.app': {
+        'AutoUITest.app': {
             'handlers': ['default', 'console'],
             'level': 'DEBUG',
             'propagate': True
@@ -201,7 +201,7 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False
         },
-        'HttpRunnerManager': {
+        'AutoUITest': {
             'handlers': ['scprits_handler', 'console'],
             'level': 'DEBUG',
             'propagate': False

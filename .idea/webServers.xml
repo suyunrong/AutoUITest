@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="4171b0b9-ff9c-44fc-920e-953a996b6e59" name="AutoUITest" url="http://localhost">
+      <webServer id="fb421062-e9f2-4cca-a539-4e9c5a8f25b0" name="AutoUITest (project level)" url="http://localhost">
         <fileTransfer host="localhost" port="10022" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
