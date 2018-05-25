@@ -1,10 +1,10 @@
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
-from utils.pagination import get_pager_info
+from .utils.pagination import get_pager_info
 from .models import ProjectInfo, ModuleInfo, TestCaseInfo,EnvInfo
-from utils.operation import add_project_data
-from utils.common import get_ajax_msg, set_filter_session
+from .utils.operation import add_project_data
+from .utils.common import get_ajax_msg, set_filter_session
 import logging
 import json
 
@@ -58,7 +58,13 @@ def project_list(request, id):
             except ValueError:
                 logger.error('项目信息解析异常: {project_info}'.format(project_info=project_json))
                 return JsonResponse(get_ajax_msg('sorry', '项目信息解析异常'))
-        elif request.method == 'GET':
+            # 包含mode为删除，不包含则为添加
+            if 'mode' in project_json.keys():
+                pass
+            else:
+                ajax_dict = add_project_data(type=False, **project_json)
+                return JsonResponse(ajax_dict)
+        else:
             filter_query = set_filter_session(request)
             pro_list = get_pager_info(
                 ProjectInfo, filter_query, '/data/project_list/', id)
@@ -68,7 +74,6 @@ def project_list(request, id):
                 'page_list': pro_list[0],
                 'info': filter_query,
                 'sum': pro_list[2],
-                # 'env': EnvInfo.objects.all().order_by('-create_time')
             }
             return render(request, 'project_list.html', manage_info)
     else:

@@ -689,3 +689,77 @@ django.urls.exceptions.NoReverseMatch: Reverse for '' not found. '' is not a val
 2018-05-24 14:13:46,775 [django.request:93] [base:get_response] [WARNING]- Not Found: /api/project_list/1/
 2018-05-24 14:13:48,936 [django.request:93] [base:get_response] [WARNING]- Not Found: /api/add_project/
 2018-05-24 14:21:18,629 [django.request:93] [base:get_response] [WARNING]- Not Found: /api/project_list/1/
+2018-05-25 16:00:25,168 [AutoUITest:23] [operation:add_register_data] [INFO]- 新增用户：data.UserInfo.objects
+2018-05-25 16:00:30,218 [AutoUITest:27] [views:login] [INFO]- susu 登录成功
+2018-05-25 16:11:59,414 [AutoUITest:51] [operation:add_project_data] [INFO]- 新增项目：data.ProjectInfo.objects
+2018-05-25 16:13:58,650 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/project_list/1
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 139, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view data.views.project_list didn't return an HttpResponse object. It returned None instead.
+2018-05-25 16:19:22,420 [AutoUITest:51] [operation:add_project_data] [INFO]- 新增项目：data.ProjectInfo.objects
+2018-05-25 16:24:53,960 [AutoUITest:51] [operation:add_project_data] [INFO]- 新增项目：data.ProjectInfo.objects
+2018-05-25 16:58:55,651 [AutoUITest:27] [views:login] [INFO]- susu 登录成功
+2018-05-25 16:59:11,518 [AutoUITest:52] [operation:add_project_data] [INFO]- 新增项目：data.ProjectInfo.objects
+2018-05-25 16:59:58,692 [AutoUITest:68] [operation:add_project_data] [INFO]- 项目更新成功: {'index': '3', 'project_name': '测试一下添加', 'dev_leader': '测试一下添加', 'test_leader': '测试一下添加', 'simple_desc': '测试一下添加', 'other_desc': '测试一下添加'}
+2018-05-25 16:59:58,692 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/project_list/1/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\data\views.py", line 62, in project_list
+    return JsonResponse(ajax_dict)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\http\response.py", line 503, in __init__
+    'In order to allow non-dict objects to be serialized set the '
+TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
+2018-05-25 17:00:56,600 [AutoUITest:68] [operation:add_project_data] [INFO]- 项目更新成功: {'index': '3', 'project_name': '测试一下添加', 'dev_leader': '测试一下添加', 'test_leader': '测试一下添加', 'simple_desc': '测试一下添加', 'other_desc': '测试一下添加'}
+2018-05-25 17:00:56,600 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/project_list/1/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\data\views.py", line 62, in project_list
+    return JsonResponse(ajax_dict)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\http\response.py", line 503, in __init__
+    'In order to allow non-dict objects to be serialized set the '
+TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
+2018-05-25 17:01:28,817 [AutoUITest:68] [operation:add_project_data] [INFO]- 项目更新成功: {'index': '3', 'project_name': '测试一下添加', 'dev_leader': '2', 'test_leader': '测试一下添加', 'simple_desc': '测试一下添加', 'other_desc': '测试一下添加'}
+2018-05-25 17:01:28,817 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/project_list/1/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pythonworkspace\AutoUITest\data\views.py", line 62, in project_list
+    return JsonResponse(ajax_dict)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\http\response.py", line 503, in __init__
+    'In order to allow non-dict objects to be serialized set the '
+TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
+2018-05-25 17:02:49,315 [AutoUITest:68] [operation:add_project_data] [INFO]- 项目更新成功: {'index': '3', 'project_name': '测试一下添加', 'dev_leader': '2', 'test_leader': '测试一下添加', 'simple_desc': '测试一下添加', 'other_desc': '测试一下添加'}
+2018-05-25 17:02:53,792 [AutoUITest:68] [operation:add_project_data] [INFO]- 项目更新成功: {'index': '3', 'project_name': '测试一下添加', 'dev_leader': '2', 'test_leader': '测试一下添加312312', 'simple_desc': '测试一下添加', 'other_desc': '测试一下添加'}
+2018-05-25 17:02:58,282 [AutoUITest:68] [operation:add_project_data] [INFO]- 项目更新成功: {'index': '3', 'project_name': '测试一下添加', 'dev_leader': '2', 'test_leader': '测试一', 'simple_desc': '测试一下添加', 'other_desc': '测试一下添加'}
+2018-05-25 17:03:04,317 [AutoUITest:68] [operation:add_project_data] [INFO]- 项目更新成功: {'index': '3', 'project_name': '测试一下添加', 'dev_leader': '23', 'test_leader': '测试一', 'simple_desc': '测试一下添加', 'other_desc': '测试一下添加'}
+2018-05-25 17:05:26,965 [AutoUITest:52] [operation:add_project_data] [INFO]- 新增项目：data.ProjectInfo.objects
+2018-05-25 17:05:27,285 [django.request:93] [base:get_response] [WARNING]- Not Found: /data/add_project/{% url 'project_list' id=1 %}
+2018-05-25 17:05:47,332 [AutoUITest:55] [operation:add_project_data] [DEBUG]- 123 项目名已经存在
+2018-05-25 17:05:50,106 [AutoUITest:52] [operation:add_project_data] [INFO]- 新增项目：data.ProjectInfo.objects
+2018-05-25 17:10:09,290 [django.request:93] [base:get_response] [WARNING]- Not Found: /api/add_module/
+2018-05-25 17:10:13,624 [django.request:118] [exception:handle_uncaught_exception] [ERROR]- Internal Server Error: /data/project_list/1/
+Traceback (most recent call last):
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "D:\pythonvirtuaenv\lib\site-packages\django\core\handlers\base.py", line 139, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view data.views.project_list didn't return an HttpResponse object. It returned None instead.
+2018-05-25 17:18:54,813 [AutoUITest:27] [views:login] [INFO]- susu 登录成功
+2018-05-25 17:23:51,665 [django.request:93] [base:get_response] [WARNING]- Not Found: /api/load_config/

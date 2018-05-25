@@ -177,7 +177,7 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 100,
             'backupCount': 5,
             'formatter': 'standard',
-            'encoding': 'utf8',
+            'encoding': 'UTF-8',
         },
         'scprits_handler': {
             'level': 'DEBUG',
@@ -186,7 +186,7 @@ LOGGING = {
             'maxBytes': 1024 * 1024 * 100,
             'backupCount': 5,
             'formatter': 'standard',
-            'encoding': 'utf8',
+            'encoding': 'UTF-8',
         },
     },
     'loggers': {

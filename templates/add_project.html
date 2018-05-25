@@ -13,7 +13,7 @@
             <div class="fbneirong">
                 <form class="form-horizontal" id="add_project">
                     <div class="form-group  has-feedback">
-                        <label class="control-label col-md-1 text-primary" for="project_name">项目名称：</label>
+                        <label class="control-label col-md-2 text-primary" for="project_name">项目名称：</label>
                         <div class="col-md-5">
                             <input type="text" class="form-control" id="project_name"
                                    aria-describedby="inputSuccess3Status" name="project_name" placeholder="请输入项目名称"
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="form-group  has-feedback">
-                        <label class="control-label col-md-1 text-primary" for="dev_leader">开发负责人：</label>
+                        <label class="control-label col-md-2 text-primary" for="dev_leader">开发负责人：</label>
                         <div class="col-md-5">
                             <input type="text" class="form-control" id="dev_leader" name="dev_leader"
                                    aria-describedby="inputSuccess3Status" placeholder="请指定开发负责人" value="">
@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="form-group  has-feedback">
-                        <label class="control-label col-md-1 text-primary" for="test_leader">测试负责人：</label>
+                        <label class="control-label col-md-2 text-primary" for="test_leader">测试负责人：</label>
                         <div class="col-md-5">
                             <input type="text" class="form-control" id="test_leader" name="test_leader"
                                    aria-describedby="inputSuccess3Status" placeholder="请输入测试负责人" value="">
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="form-group  has-feedback">
-                        <label class="control-label col-md-1 text-primary" for="simple_desc">简要描述：</label>
+                        <label class="control-label col-md-2 text-primary" for="simple_desc">简要描述：</label>
                         <div class="col-md-5">
                             <textarea type="text" rows="3" class="form-control" id="simple_desc" name="simple_desc"
                                       aria-describedby="inputSuccess3Status" placeholder="项目简要描述"></textarea>
@@ -49,7 +49,7 @@
                     </div>
 
                     <div class="form-group  has-feedback">
-                        <label class="control-label col-md-1 text-primary" for="other_desc">其他描述：</label>
+                        <label class="control-label col-md-2 text-primary" for="other_desc">其他描述：</label>
                         <div class="col-md-5">
                             <textarea type="text" rows="3" class="form-control" id="other_desc" name="other_desc"
                                       aria-describedby="inputSuccess3Status" placeholder="项目其他相关描述"></textarea>
@@ -57,9 +57,9 @@
                         </div>
                     </div>
                     <div class="am-form-group am-cf">
-                        <div class="you" style="margin-left: 8%;">
+                        <div class="you" style="margin-left: 17.3%;">
                             <button type="button" class="am-btn am-btn-success am-radius" id="send"
-                                    onclick="info_ajax('#add_project', '{% url 'add_project' %}')">点 击 提 交
+                                    onclick="add_data_ajax('#add_project', '{% url 'add_project' %}')">点 击 提 交
                             </button>&nbsp;
                             &raquo; &nbsp;
                             <a type="submit" href="/api/add_module/" class="am-btn am-btn-secondary am-radius">新 增 模
@@ -73,29 +73,4 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-    /*表单信息异步传输*/
-    function info_ajax(id, url) {
-        var data = $(id).serializeJSON();
-        $.ajax({
-            type: 'post',
-            url: url,
-            data: JSON.stringify(data),
-            contentType: "application/json",
-            success: function (data) {
-                if(data['msg'] === 'ok'){
-                    myAlert('项目添加成功');
-                    {#window.location.reload();#}
-                    window.location.href = data['content']
-                }else{
-                    myAlert(data['content'])
-                }
-            },
-            error: function () {
-                myAlert('Sorry，服务器可能开小差啦, 请重试!');
-            }
-        });
-
-    }
-    </script>
 {% endblock %}

@@ -59,30 +59,30 @@ def customer_pager(base_url, current_page, total_page):
     if current_page <= start_pager:
         first = "<li><a href=''>首页</a></li>"
     else:
-        first = "<li><a href='%s%d'>首页</a></li>" % (base_url, start_pager)
+        first = "<li><a href='%s%d/'>首页</a></li>" % (base_url, start_pager)
     pager_list.append(first)
 
     if current_page <= start_pager:
         prev = "<li><a href=''><<</a></li>"
     else:
-        prev = "<li><a href='%s%d'><<</a></li>" % (base_url, current_page - start_pager)
+        prev = "<li><a href='%s%d/'><<</a></li>" % (base_url, current_page - start_pager)
     pager_list.append(prev)
 
     for i in range(begin + start_pager, end + start_pager):
         if i == current_page:
-            temp = "<li><a href='%s%d' class='selected'>%d</a></li>" % (base_url, i, i)
+            temp = "<li><a href='%s%d/' class='selected'>%d</a></li>" % (base_url, i, i)
         else:
-            temp = "<li><a href='%s%d'>%d</a></li>" % (base_url, i, i)
+            temp = "<li><a href='%s%d/'>%d</a></li>" % (base_url, i, i)
         pager_list.append(temp)
     if current_page >= total_page:
         next = "<li><a href=''>>></a></li>"
     else:
-        next = "<li><a href='%s%d'>>></a></li>" % (base_url, current_page + start_pager)
+        next = "<li><a href='%s%d/'>>></a></li>" % (base_url, current_page + start_pager)
     pager_list.append(next)
     if current_page >= total_page:
         last = "<li><a href='''>尾页</a></li>"
     else:
-        last = "<li><a href='%s%d' >尾页</a></li>" % (base_url, total_page)
+        last = "<li><a href='%s%d/' >尾页</a></li>" % (base_url, total_page)
     pager_list.append(last)
     result = ''.join(pager_list)
     return mark_safe(result)  # 把字符串转成html语言

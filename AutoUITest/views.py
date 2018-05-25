@@ -3,7 +3,7 @@ from django.shortcuts import render
 from data.models import UserInfo
 import logging
 import json
-from utils.operation import add_register_data
+from data.utils.operation import add_register_data
 from django.http import JsonResponse
 
 logger = logging.getLogger('AutoUITest')

@@ -107,6 +107,30 @@ function auto_load(id, url, target, type) {
 
 }
 
+/*新增内容ajax*/
+function add_data_ajax(id, url) {
+        var data = $(id).serializeJSON();
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function (data) {
+                if(data['msg'] === 'ok'){
+                    myAlert(data['content']);
+                    window.location.href = '/data/project_list/1'
+                }else{
+                    myAlert(data['content'])
+                }
+            },
+            error: function () {
+                myAlert('Sorry，服务器可能开小差啦, 请重试!');
+            }
+        });
+
+    }
+
+/*更新内容ajax*/
 function update_data_ajax(id, url) {
     var data = $(id).serializeJSON();
     $.ajax({
@@ -115,11 +139,11 @@ function update_data_ajax(id, url) {
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function (data) {
-            if (data !== 'ok') {
-                myAlert(data);
-            }
-            else {
+            if(data['msg'] === 'ok'){
+                myAlert(data['content']);
                 window.location.reload();
+            }else{
+                myAlert(data['content'])
             }
         },
         error: function () {
@@ -128,6 +152,7 @@ function update_data_ajax(id, url) {
     });
 }
 
+// 删除内容ajax
 function del_data_ajax(id, url) {
     var data = {
         "id": id,
