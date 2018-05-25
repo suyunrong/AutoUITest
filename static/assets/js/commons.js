@@ -118,7 +118,15 @@ function add_data_ajax(id, url) {
             success: function (data) {
                 if(data['msg'] === 'ok'){
                     myAlert(data['content']);
-                    window.location.href = '/data/project_list/1'
+                    if(id.indexOf('project') !== -1){
+                        window.location.href = '/data/project_list/1'
+                    }else if(id.indexOf('module') !== -1){
+                        window.location.href = '/data/module_list/1'
+                    }else if(id.indexOf('case') !== -1) {
+                        window.location.href = '/data/case_list/1'
+                    }else if(id.indexOf('script') !== -1) {
+                        window.location.href = '/data/script_list/1'
+                    }
                 }else{
                     myAlert(data['content'])
                 }
@@ -164,11 +172,11 @@ function del_data_ajax(id, url) {
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function (data) {
-            if (data !== 'ok') {
-                myAlert(data);
-            }
-            else {
+            if(data['msg'] === 'ok'){
+                myAlert(data['content']);
                 window.location.reload();
+            }else{
+                myAlert(data['content'])
             }
         },
         error: function () {

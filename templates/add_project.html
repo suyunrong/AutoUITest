@@ -57,12 +57,14 @@
                         </div>
                     </div>
                     <div class="am-form-group am-cf">
-                        <div class="you" style="margin-left: 17.3%;">
+                        <div class="you" style="margin-left: 17%;">
+                            <a type="submit" href="{% url 'project_list' id=1 %}" class="am-btn am-btn-secondary am-radius">项目列表</a>
+                            &laquo; &nbsp;
                             <button type="button" class="am-btn am-btn-success am-radius" id="send"
                                     onclick="add_data_ajax('#add_project', '{% url 'add_project' %}')">点 击 提 交
                             </button>&nbsp;
                             &raquo; &nbsp;
-                            <a type="submit" href="/api/add_module/" class="am-btn am-btn-secondary am-radius">新 增 模
+                            <a type="submit" href="{% url 'add_module' %}" class="am-btn am-btn-secondary am-radius">新 增 模
                                 块</a>
 
                         </div>

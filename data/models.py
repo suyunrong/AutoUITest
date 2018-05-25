@@ -47,6 +47,7 @@ class ModuleInfo(BaseModel):
     belong_project = models.ForeignKey(ProjectInfo, on_delete=models.CASCADE)
     test_user = models.CharField('测试人员', max_length=120)
     simple_desc = models.CharField('简要描述', max_length=120, null=True)
+    other_desc = models.CharField('其他描述', max_length=120, null=True)
 
     def __str__(self):
         return self.module_name
@@ -60,7 +61,7 @@ class TestCaseInfo(BaseModel):
     case_name = models.CharField('用例名称', max_length=200)
     belong_project = models.CharField('所属项目', max_length=64)
     belong_module = models.ForeignKey(ModuleInfo, on_delete=models.CASCADE)
-    case_desc = models.TextField('用例描述')
+    case_desc = models.TextField('用例描述', null=True)
     author = models.CharField('所有者', max_length=32)
     is_execute = models.BooleanField('是否执行', default=True)
 
@@ -73,7 +74,7 @@ class TestCaseScriptInfo(BaseModel):
     class Meta:
         verbose_name = '测试脚本信息'
         db_table = 'TestCaseScriptInfo'
-    belong_module = models.ForeignKey(TestCaseInfo, on_delete=models.CASCADE)
+    belong_testcase = models.ForeignKey(TestCaseInfo, on_delete=models.CASCADE)
     script_desc = models.TextField('脚本描述')
     script_step = models.IntegerField('操作步骤', default=1)
     operate_type = models.CharField('操作类型', max_length=32)

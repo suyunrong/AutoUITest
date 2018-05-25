@@ -1,6 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import DataError
-
 from data.models import UserInfo, ProjectInfo, ModuleInfo, TestCaseInfo, TestCaseScriptInfo
 from data.utils.common import get_ajax_msg
 import logging
@@ -59,7 +58,7 @@ def add_project_data(type=True, **kwargs):
             return get_ajax_msg('sorry', '项目信息过长，请重新编辑')
     else:
         try:
-            project_obj = project_info.get(id=kwargs.get('index'))
+            project_obj = project_info.get(id=kwargs.pop('index'))
             project_obj.project_name = kwargs.get('project_name')
             project_obj.dev_leader = kwargs.get('dev_leader')
             project_obj.test_leader = kwargs.get('test_leader')
@@ -74,13 +73,154 @@ def add_project_data(type=True, **kwargs):
             logging.error('更新失败：{kwargs}'.format(kwargs=kwargs))
             return get_ajax_msg('sorry', '更新失败，请重试')
 
+
 def del_project_data(id):
+    '''
+    删除项目逻辑
+    :param id:
+    :return:
+    '''
     try:
         project_name = ProjectInfo.objects.get(id=id).project_name
-        belong_modules = ModuleInfo.objects.filter(belong_project__project_name=project_name).values_list()
-        for case_obj in belong_modules:
-            pass
+        belong_modules = ModuleInfo.objects.filter(belong_project__project_name=project_name).values_list('module_name')
+        for module_name in belong_modules:
+            belong_testcase = TestCaseInfo.objects.filter(belong_module__module_name=module_name[0]).values_list('case_name')
+            for case_name in belong_testcase:
+                TestCaseScriptInfo.objects.filter(belong_testcase__case_name=case_name[0]).delete()
+                TestCaseInfo.objects.filter(case_name__exact=case_name).delete()
         ModuleInfo.objects.filter(belong_project__project_name=project_name).delete()
         ProjectInfo.objects.get(id=id).delete()
     except ObjectDoesNotExist:
-        pass
+        return get_ajax_msg('sorry', '项目删除异常，请重试')
+    logging.info('{project_name} 项目已删除'.format(project_name=project_name))
+    return get_ajax_msg('ok', '项目删除成功')
+
+
+def add_module_data(type=True, **kwargs):
+    '''
+    添加模块逻辑
+    :param type:
+    :param kwargs:
+    :return:
+    '''
+    module_info = ModuleInfo.objects
+    belong_project = kwargs.pop('belong_project')
+    module_name = kwargs.get('module_name')
+    if type:
+        try:
+            if kwargs.get('module_name') is '':
+                return get_ajax_msg('sorry', '模块名称不能为空')
+            if kwargs.get('belong_project') is '':
+                return get_ajax_msg('sorry', '所属项目不能为空')
+            if kwargs.get('test_user') is '':
+                return get_ajax_msg('sorry', '测试人员不能为空')
+
+            if module_info.filter(belong_project__project_name__exact=belong_project)\
+                    .filter(module_name__exact=module_name).count() < 1:
+                try:
+                    belong_project = ProjectInfo.objects.get(project_name__exact=belong_project)
+                except ObjectDoesNotExist:
+                    logging.error('项目信息读取失败：{belong_project}'.format(belong_project=belong_project))
+                    return '项目信息读取失败，请重试'
+                kwargs['belong_project'] = belong_project
+                module_info.create(**kwargs)
+                logger.info('新增模块：{module_info}'.format(module_info=module_info))
+                return get_ajax_msg('ok', '模块添加成功')
+            else:
+                return get_ajax_msg('sorry', '模块名已经在项目中存在，请更换模块名')
+        except DataError:
+            return get_ajax_msg('sorry', '模块信息过长，请重新编辑')
+    else:
+        try:
+            if module_name != module_info.get(id=kwargs.get('index')).module_name \
+                    and module_info.filter(belong_project__project_name__exact=belong_project) \
+                        .filter(module_name__exact=module_name).count() >0:
+                return get_ajax_msg('sorry', '模块名已经在项目中存在，请更换模块名')
+
+            module_obj = module_info.get(id=kwargs.pop('index'))
+            module_obj.module_name = kwargs.get('module_name')
+            module_obj.test_leader = kwargs.get('test_leader')
+            module_obj.simple_desc = kwargs.get('simple_desc')
+            module_obj.other_desc = kwargs.get('other_desc')
+            module_obj.save()
+
+            logger.info('模块更新成功: {kwargs}'.format(kwargs=kwargs))
+            return get_ajax_msg('ok', '模块更新成功')
+        except DataError:
+            return get_ajax_msg('sorry', '模块信息过长，请重新编辑')
+        except Exception:
+            logging.error('更新失败：{kwargs}'.format(kwargs=kwargs))
+            return get_ajax_msg('sorry', '更新失败，请重试')
+
+
+def del_module_data(id):
+    '''
+    删除模块逻辑
+    :param id:
+    :return:
+    '''
+    try:
+        module_name = ModuleInfo.objects.get(id=id).module_name
+        belong_testcase = TestCaseInfo.objects.filter(belong_module__module_name=module_name).values_list('case_name')
+        for case_name in belong_testcase:
+            TestCaseScriptInfo.objects.filter(belong_testcase__case_name=case_name).delete()
+        ModuleInfo.objects.get(id=id).delete()
+    except ObjectDoesNotExist:
+        return get_ajax_msg('sorry', '模块删除异常，请重试')
+    logging.info('{module_name} 模块已删除'.format(module_name=module_name))
+    return get_ajax_msg('ok', '模块删除成功')
+
+
+def add_case_data(type=True, **kwargs):
+    case_info = TestCaseInfo.objects
+    belong_project = kwargs.get('belong_project')
+    belong_module = kwargs.pop('belong_module')
+    case_name = kwargs.get('case_name')
+    if type:
+        try:
+            if kwargs.get('case_name') is '':
+                return get_ajax_msg('sorry', '用例名称不能为空')
+            if kwargs.get('belong_project') is '':
+                return get_ajax_msg('sorry', '所属项目不能为空')
+            if kwargs.get('belong_project') is '':
+                return get_ajax_msg('sorry', '所属模块不能为空')
+            if kwargs.get('auth') is '':
+                return get_ajax_msg('sorry', '所有者不能为空')
+
+            if case_info.filter(belong_module__module_name=belong_module)\
+                    .filter(case_name__exact=case_name).count() < 1:
+                try:
+                    belong_module = ModuleInfo.objects.get(module_name__exact=belong_module)
+                except ObjectDoesNotExist:
+                    logging.error('模块信息读取失败：{belong_module}'.format(belong_module=belong_module))
+                    return '模块信息读取失败，请重试'
+                kwargs['belong_project'] = belong_project
+                kwargs['belong_module'] = belong_module
+                case_info.create(**kwargs)
+                logger.info('新增用例：{case_info}'.format(case_info=case_info))
+                return get_ajax_msg('ok', '用例添加成功')
+            else:
+                return get_ajax_msg('sorry', '用例名已经在模块中存在，请更换用例名')
+        except DataError:
+            return get_ajax_msg('sorry', '用例信息过长，请重新编辑')
+    else:
+        try:
+            if case_name != case_info.get(id=kwargs.get('index')).module_name \
+                    and case_info.filter(belong_project__project_name__exact=belong_project) \
+                        .filter(module_name__exact=case_name).count() >0:
+                return get_ajax_msg('sorry', '模块名已经在项目中存在，请更换模块名')
+
+            module_obj = case_info.get(id=kwargs.pop('index'))
+            module_obj.module_name = kwargs.get('module_name')
+            module_obj.test_leader = kwargs.get('test_leader')
+            module_obj.simple_desc = kwargs.get('simple_desc')
+            module_obj.other_desc = kwargs.get('other_desc')
+            module_obj.save()
+
+            logger.info('模块更新成功: {kwargs}'.format(kwargs=kwargs))
+            return get_ajax_msg('ok', '模块更新成功')
+        except DataError:
+            return get_ajax_msg('sorry', '模块信息过长，请重新编辑')
+        except Exception:
+            logging.error('更新失败：{kwargs}'.format(kwargs=kwargs))
+            return get_ajax_msg('sorry', '更新失败，请重试')

@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from .utils.pagination import get_pager_info
 from .models import ProjectInfo, ModuleInfo, TestCaseInfo,EnvInfo
-from .utils.operation import add_project_data
+from .utils.operation import add_project_data, del_project_data, add_module_data, del_module_data, add_case_data
 from .utils.common import get_ajax_msg, set_filter_session
 import logging
 import json
@@ -60,10 +60,10 @@ def project_list(request, id):
                 return JsonResponse(get_ajax_msg('sorry', '项目信息解析异常'))
             # 包含mode为删除，不包含则为添加
             if 'mode' in project_json.keys():
-                pass
+                ajax_dict = del_project_data(id=project_json.get('id'))
             else:
                 ajax_dict = add_project_data(type=False, **project_json)
-                return JsonResponse(ajax_dict)
+            return JsonResponse(ajax_dict)
         else:
             filter_query = set_filter_session(request)
             pro_list = get_pager_info(
@@ -78,3 +78,81 @@ def project_list(request, id):
             return render(request, 'project_list.html', manage_info)
     else:
         return HttpResponseRedirect("/login/")
+
+
+def add_module(request):
+    if request.session.get('login_status'):
+        account = request.session["now_account"]
+        if request.is_ajax():
+            try:
+                module_json = json.loads(request.body.decode('utf-8'))
+            except ValueError:
+                logger.error('模块信息解析异常: {module_info}'.format(module_info=module_json))
+                return JsonResponse(get_ajax_msg('sorry', '模块信息解析异常'))
+            ajax_dict = add_module_data(**module_json)
+            return JsonResponse(ajax_dict)
+        elif request.method == 'GET':
+            manage_info = {
+                'account': account,
+                'data': ProjectInfo.objects.all().values('project_name').order_by('-create_time')
+            }
+            return render(request, "add_module.html", manage_info)
+    else:
+        return HttpResponseRedirect("/login/")
+
+
+def module_list(request, id):
+    if request.session.get('login_status'):
+        account = request.session["now_account"]
+        if request.is_ajax():
+            try:
+                module_json = json.loads(request.body.decode('utf-8'))
+            except ValueError:
+                logger.error('模块信息解析异常: {module_info}'.format(module_info=module_json))
+                return JsonResponse(get_ajax_msg('sorry', '模块信息解析异常'))
+            # 包含mode为删除，不包含则为添加
+            if 'mode' in module_json.keys():
+                ajax_dict = del_module_data(id=module_json.get('id'))
+            else:
+                ajax_dict = add_module_data(type=False, **module_json)
+            return JsonResponse(ajax_dict)
+        else:
+            filter_query = set_filter_session(request)
+            pro_list = get_pager_info(
+                ModuleInfo, filter_query, '/data/module_list/', id)
+            manage_info = {
+                'account': account,
+                'module': pro_list[1],
+                'page_list': pro_list[0],
+                'info': filter_query,
+                'sum': pro_list[2],
+            }
+            return render(request, 'module_list.html', manage_info)
+    else:
+        return HttpResponseRedirect("/login/")
+
+
+def add_case(request):
+    if request.session.get('login_status'):
+        account = request.session["now_account"]
+        if request.is_ajax():
+            try:
+                case_json = json.loads(request.body.decode('utf-8'))
+            except ValueError:
+                logger.error('模块信息解析异常: {case_info}'.format(case_info=case_json))
+                return JsonResponse(get_ajax_msg('sorry', '模块信息解析异常'))
+            ajax_dict = add_case_data(**case_json)
+            return JsonResponse(ajax_dict)
+        elif request.method == 'GET':
+            manage_info = {
+                'account': account,
+                'project_data': ProjectInfo.objects.all().values('project_name').order_by('-create_time'),
+                'module_data': ModuleInfo.objects.all().values('module_name').order_by('-create_time')
+            }
+            return render(request, "add_case.html", manage_info)
+    else:
+        return HttpResponseRedirect("/login/")
+
+
+def case_list(request, id):
+    pass

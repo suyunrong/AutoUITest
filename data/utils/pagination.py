@@ -88,7 +88,7 @@ def customer_pager(base_url, current_page, total_page):
     return mark_safe(result)  # 把字符串转成html语言
 
 
-def get_pager_info(Model, filter_query, url, id, per_items=10):
+def get_pager_info(Model, filter_query, url, id, per_items=15):
     """
     筛选列表信息
     :param Model: Models实体类
@@ -108,7 +108,7 @@ def get_pager_info(Model, filter_query, url, id, per_items=10):
     obj = Model.objects
 
     if url == '/data/project_list/':
-        obj = obj.filter(project_name__contains=name) if name is not '' else obj.filter(dev_leader__contains=user)
+        obj = obj.filter(project_name__contains=name) if name is not '' else obj.filter(test_leader__contains=user)
 
     elif url == '/data/module_list/':
         if belong_project is not '':
@@ -155,17 +155,14 @@ def get_pager_info(Model, filter_query, url, id, per_items=10):
                 module_count = str(ModuleInfo.objects.filter(belong_project__project_name__exact=pro_name).count())
                 test_count = str(TestCaseInfo.objects.filter(belong_project__exact=pro_name).count())
                 sum.setdefault(model.id, module_count + ' / ' + test_count)
-        elif url == '/api/module_list/':
+        elif url == '/data/module_list/':
             for model in info:
                 module_name = model.module_name
                 project_name = model.belong_project.project_name
                 test_count = str(
-                    TestCaseInfo.objects.filter(belong_module__module_name=module_name, type__exact=1,
+                    TestCaseInfo.objects.filter(belong_module__module_name=module_name,
                                                 belong_project=project_name).count())
-                config_count = str(
-                    TestCaseInfo.objects.filter(belong_module__module_name=module_name, type__exact=2,
-                                                belong_project=project_name).count())
-                sum.setdefault(model.id, test_count + '/ ' + config_count)
+                sum.setdefault(model.id, test_count)
         page_list = customer_pager(url, id, page_info.total_page)
 
     return page_list, info, sum

@@ -157,15 +157,15 @@
             <form id="pro_filter" method="post" action="{% url 'project_list' id=1 %}">
                 <ul>
                     <li style="padding-top: 5px"><input value="{{ info.name }}" type="text" name="name"
-                                                        class="am-form-field am-input-sm am-input-xm"
+                                                        class="am-form-field am-input-sm am-input-dm"
                                                         placeholder="项目名称"/></li>
                     <li>
                     <li style="padding-top: 5px"><input value="{{ info.user }}" type="text" name="user"
-                                                        class="am-form-field am-input-sm am-input-xm"
-                                                        placeholder="负责人"/></li>
+                                                        class="am-form-field am-input-sm am-input-dm"
+                                                        placeholder="测试负责人"/></li>
 
-                    <button class="am-btn am-radius am-btn-xs am-btn-success"
-                            style="margin-top: -1px;">查询
+                    <button class="am-btn am-radius am-btn-md am-btn-success"
+                            style="margin-top: 5px;">查询
                     </button>
                     </li>
                 </ul>
@@ -250,6 +250,8 @@
         </form>
     </div>
     <script type="text/javascript">
+
+        {# 编辑项目 #}
         function edit(id, pro_name, dev_leader, test_leader, simple_desc, other_desc) {
             $('#index').val(id);
             $('#project_name').val(pro_name);
@@ -267,6 +269,7 @@
             });
         }
 
+        {# 删除项目 #}
         function invalid(name) {
             $('#my-invalid').modal({
                 relatedTarget: this,

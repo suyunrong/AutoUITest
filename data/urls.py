@@ -20,4 +20,8 @@ urlpatterns = [
     path('index/', views.index, name='index'),
     path('add_project/', views.add_project, name='add_project'),
     path('project_list/<int:id>/', views.project_list, name='project_list'),
+    path('add_module/', views.add_module, name='add_module'),
+    path('module_list/<int:id>/', views.module_list, name='module_list'),
+    path('add_case/', views.add_case, name='add_case'),
+    path('case_list/<int:id>/', views.case_list, name='case_list'),
 ]
