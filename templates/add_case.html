@@ -24,7 +24,9 @@
                     <div class="form-group">
                         <label class="control-label col-md-2 text-primary" for="belong_project">所属项目：</label>
                         <div class="col-md-5">
-                            <select name="belong_project" class="form-control">
+                            <select id='belong_project' name="belong_project" class="form-control"
+                                        onchange="auto_load('#add_case', '{% url 'choose' %}',
+                                                '#belong_module_id', 'module')">
                                 <option value="请选择">请选择</option>
                                 {% for foo in project_data %}
                                     <option value="{{ foo.project_name }}">{{ foo.project_name }}</option>
@@ -36,11 +38,9 @@
                     <div class="form-group">
                         <label class="control-label col-md-2 text-primary" for="belong_module">所属模块：</label>
                         <div class="col-md-5">
-                            <select name="belong_module" class="form-control">
-                                <option value="请选择">请选择</option>
-                                {% for foo in module_data %}
-                                    <option value="{{ foo.module_name }}">{{ foo.module_name }}</option>
-                                {% endfor %}
+                            <select id="belong_module_id" name="belong_module" class="form-control"
+                                        onchange="auto_load('#add_case', '{% url 'choose' %}',
+                                                '#prepos_case_id,#postpos_case_id', 'case')">
                             </select>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                         <label class="control-label col-md-2 text-primary" for="author">所有者：</label>
                         <div class="col-md-5">
                             <input type="text" class="form-control" id="author" name="author"
-                                   aria-describedby="inputSuccess3Status" placeholder="请输入所有者" value="">
+                                   aria-describedby="inputSuccess3Status" placeholder="请输入所有者" value="{{ account }}">
                             <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
                         </div>
                     </div>
@@ -64,9 +64,25 @@
                     </div>
 
                     <div class="form-group  has-feedback">
-                        <label class="control-label col-md-2 text-primary" for="is_execute">是否执行：</label>
+                        <label class="control-label col-md-2 text-primary" for="prepos_case">前置用例：</label>
                         <div class="col-md-5">
-                            <input type="checkbox" id="is_execute" name="is_execute" value="True" checked/>
+                            <select id="prepos_case_id" name="prepos_case" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group  has-feedback">
+                        <label class="control-label col-md-2 text-primary" for="postpos_case">后置用例：</label>
+                        <div class="col-md-5">
+                            <select id="postpos_case_id" name="postpos_case" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group  has-feedback">
+                        <label class="control-label col-md-2 text-primary" for="is_execute">是否执行：</label>
+                        <div class="col-md-5 controls">
+                            <input type="checkbox" id="is_execute" name="is_execute" checked/>
                         </div>
                     </div>
                     <div class="am-form-group am-cf">
@@ -88,14 +104,12 @@
     <script type="application/javascript">
         $(document).ready(function(){
             $("#is_execute").bootstrapSwitch();
-            $("#is_execute").on('switchChange.bootstrapSwitch', function (event,state) {
-                {# 后台只识别首写字母为大写的boolean #}
-                if(state == true){
-                    $("#is_execute").attr("value", 'True');
-                }else if(state == false){
-                    $("#is_execute").attr("value", 'False');
-                }
-            });
         });
+
+        $("#is_execute").on('switchChange.bootstrapSwitch', function (event,data) {
+            {# 后台只识别首写字母为大写的boolean #}
+            $("#is_execute").attr('value', data);
+        });
+
     </script>
 {% endblock %}

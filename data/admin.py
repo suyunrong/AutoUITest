@@ -44,7 +44,8 @@ class ModuleInfoAdmin(admin.ModelAdmin):
 
 @admin.register(TestCaseInfo)
 class TestCaseInfoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'case_name', 'case_desc', 'author', 'is_execute', 'create_time', 'update_time')
+    list_display = ('id', 'case_name', 'case_desc', 'author', 'prepos_case', 'postpos_case', 'is_execute',
+                    'create_time', 'update_time')
     list_per_page = 10
     ordering = ('-create_time',)
     list_display_links = ('case_name',)

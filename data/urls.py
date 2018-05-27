@@ -23,5 +23,6 @@ urlpatterns = [
     path('add_module/', views.add_module, name='add_module'),
     path('module_list/<int:id>/', views.module_list, name='module_list'),
     path('add_case/', views.add_case, name='add_case'),
+    path('choose/', views.choose, name='choose'),
     path('case_list/<int:id>/', views.case_list, name='case_list'),
 ]

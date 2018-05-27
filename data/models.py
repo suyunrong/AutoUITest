@@ -63,7 +63,9 @@ class TestCaseInfo(BaseModel):
     belong_module = models.ForeignKey(ModuleInfo, on_delete=models.CASCADE)
     case_desc = models.TextField('用例描述', null=True)
     author = models.CharField('所有者', max_length=32)
-    is_execute = models.BooleanField('是否执行', default=True)
+    prepos_case = models.CharField('前置用例', max_length=250, null=True)
+    postpos_case = models.CharField('后置用例', max_length=250, null=True)
+    is_execute = models.BooleanField('是否执行', default=False)
 
     def __str__(self):
         return self.case_name

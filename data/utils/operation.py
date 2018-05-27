@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import DataError
 from data.models import UserInfo, ProjectInfo, ModuleInfo, TestCaseInfo, TestCaseScriptInfo
-from data.utils.common import get_ajax_msg
+from data.utils.common import get_ajax_msg, load_modules, load_cases, load_cases_list
 import logging
 
 logger = logging.getLogger('AutoUITest')
@@ -172,9 +172,10 @@ def del_module_data(id):
 
 
 def add_case_data(type=True, **kwargs):
+
     case_info = TestCaseInfo.objects
     belong_project = kwargs.get('belong_project')
-    belong_module = kwargs.pop('belong_module')
+    belong_module = kwargs.get('belong_module')
     case_name = kwargs.get('case_name')
     if type:
         try:
@@ -182,15 +183,15 @@ def add_case_data(type=True, **kwargs):
                 return get_ajax_msg('sorry', '用例名称不能为空')
             if kwargs.get('belong_project') is '':
                 return get_ajax_msg('sorry', '所属项目不能为空')
-            if kwargs.get('belong_project') is '':
+            if kwargs.get('belong_module') is '':
                 return get_ajax_msg('sorry', '所属模块不能为空')
-            if kwargs.get('auth') is '':
+            if kwargs.get('author') is '':
                 return get_ajax_msg('sorry', '所有者不能为空')
 
-            if case_info.filter(belong_module__module_name=belong_module)\
+            if case_info.filter(belong_module_id=belong_module) \
                     .filter(case_name__exact=case_name).count() < 1:
                 try:
-                    belong_module = ModuleInfo.objects.get(module_name__exact=belong_module)
+                    belong_module = ModuleInfo.objects.get(id=belong_module)
                 except ObjectDoesNotExist:
                     logging.error('模块信息读取失败：{belong_module}'.format(belong_module=belong_module))
                     return '模块信息读取失败，请重试'
@@ -205,22 +206,46 @@ def add_case_data(type=True, **kwargs):
             return get_ajax_msg('sorry', '用例信息过长，请重新编辑')
     else:
         try:
-            if case_name != case_info.get(id=kwargs.get('index')).module_name \
-                    and case_info.filter(belong_project__project_name__exact=belong_project) \
-                        .filter(module_name__exact=case_name).count() >0:
-                return get_ajax_msg('sorry', '模块名已经在项目中存在，请更换模块名')
+            if case_name != case_info.get(id=kwargs.get('index')).case_name \
+                    and case_info.filter(belong_project__exact=belong_project) \
+                        .filter(belong_module__module_name=belong_module).count() >0:
+                return get_ajax_msg('sorry', '用例名已经在项目中存在，请更换用例名')
+            try:
+                belong_module = ModuleInfo.objects.get(module_name__exact=belong_module);
+            except ObjectDoesNotExist:
+                logging.error('模块信息读取失败：{belong_module}'.format(belong_module=belong_module))
+                return '模块信息读取失败，请重试'
+            kwargs['belong_module'] = belong_module
+            case_obj = case_info.get(id=kwargs.pop('index'))
+            case_obj.case_name = kwargs.get('case_name')
+            case_obj.belong_module = kwargs.get('belong_module')
+            case_obj.author = kwargs.get('author')
+            case_obj.case_desc = kwargs.get('case_desc')
+            case_obj.prepos_case = kwargs.get('prepos_case')
+            case_obj.postpos_case = kwargs.get('postpos_case')
+            case_obj.save()
 
-            module_obj = case_info.get(id=kwargs.pop('index'))
-            module_obj.module_name = kwargs.get('module_name')
-            module_obj.test_leader = kwargs.get('test_leader')
-            module_obj.simple_desc = kwargs.get('simple_desc')
-            module_obj.other_desc = kwargs.get('other_desc')
-            module_obj.save()
-
-            logger.info('模块更新成功: {kwargs}'.format(kwargs=kwargs))
-            return get_ajax_msg('ok', '模块更新成功')
+            logger.info('用例更新成功: {kwargs}'.format(kwargs=kwargs))
+            return get_ajax_msg('ok', '用例更新成功')
         except DataError:
-            return get_ajax_msg('sorry', '模块信息过长，请重新编辑')
+            return get_ajax_msg('sorry', '用例信息过长，请重新编辑')
         except Exception:
             logging.error('更新失败：{kwargs}'.format(kwargs=kwargs))
             return get_ajax_msg('sorry', '更新失败，请重试')
+
+
+def choose_data(**kwargs):
+    '''
+    动态下拉获取模块、用例逻辑
+    :param kwargs:
+    :return:
+    '''
+    testcase = kwargs.get('testcase')
+    type = testcase.pop('type')
+    if type == 'module':
+        return load_modules(**testcase)
+    elif type == 'case':
+        return load_cases(**testcase)
+    elif type == 'case_list':
+        return load_cases_list(**testcase)
+    # return load_modules(**testcase) if type == 'module' else load_cases(**testcase)

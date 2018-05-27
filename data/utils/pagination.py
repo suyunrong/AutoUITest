@@ -115,18 +115,8 @@ def get_pager_info(Model, filter_query, url, id, per_items=15):
             obj = obj.filter(belong_project__project_name__contains=belong_project)
         else:
             obj = obj.filter(module_name__contains=name) if name is not '' else obj.filter(test_user__contains=user)
-    elif url == '/data/report_list/':
-        obj = obj.filter(report_name__contains=filter_query.get('report_name'))
-    elif url == '/data/periodictask/':
-        obj = obj.filter(name__contains=name).values('id', 'name', 'kwargs', 'enabled',
-                                                     'date_changed') if name is not '' else obj.all().values('id',
-                                                                                                             'name',
-                                                                                                             'kwargs',
-                                                                                                             'enabled',
-                                                                                                             'date_changed',
-                                                                                                             'description')
-    elif url != '/api/env_list/':
-        obj = obj.filter(type__exact=1) if url == '/api/test_list/' else obj.filter(type__exact=2)
+
+    elif url == '/data/case_list/':
         if belong_project and belong_module is not '':
             obj = obj.filter(belong_project__contains=belong_project).filter(
                 belong_module__module_name__contains=belong_module)
@@ -137,10 +127,12 @@ def get_pager_info(Model, filter_query, url, id, per_items=15):
                 obj = obj.filter(belong_module__module_name__contains=belong_module)
             else:
                 obj = obj.filter(name__contains=name) if name is not '' else obj.filter(author__contains=user)
+
     if url != '/api/periodictask/':
         obj = obj.order_by('-update_time')
     else:
         obj = obj.order_by('-date_changed')
+
     total = obj.count()
 
     page_info = PageInfo(id, total, per_items=per_items)

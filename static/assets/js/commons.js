@@ -1,4 +1,4 @@
-/*动态改变模块信息*/
+/* 动态改变模块信息 */
 function show_module(module_info, id) {
     module_info = module_info.split('replaceFlag');
     var a = $(id);
@@ -9,10 +9,10 @@ function show_module(module_info, id) {
             a.prepend("<option value='" + value[0] + "' >" + value[1] + "</option>")
         }
     }
-    a.prepend("<option value='请选择' >请选择</option>");
-
+    a.prepend("<option value='请选择' selected >请选择</option>");
 }
 
+/* 动态改变用例信息 */
 function show_case(case_info, id) {
     case_info = case_info.split('replaceFlag');
     var a = $(id);
@@ -23,7 +23,7 @@ function show_case(case_info, id) {
             a.prepend("<option value='" + value[0] + "' >" + value[1] + "</option>")
         }
     }
-    a.prepend("<option value='请选择' >单接口用例，无需依赖</option>");
+    a.prepend("<option value='请选择' selected >单用例测试，无需依赖</option>");
 
 }
 
@@ -64,11 +64,12 @@ function info_ajax(id, url) {
 
 }
 
+/* 动态获取值 */
 function auto_load(id, url, target, type) {
     var data = $(id).serializeJSON();
-    if (id === '#form_message') {
+    if (id === '#add_case' || id === '#list_case') {
         data = {
-            "test": {
+            "testcase": {
                 "name": data,
                 "type": type
             }
@@ -94,9 +95,10 @@ function auto_load(id, url, target, type) {
         contentType: "application/json",
         success: function (data) {
             if (type === 'module') {
-                show_module(data, target)
+                show_module(data['content'], target);
             } else {
-                show_case(data, target)
+                show_case(data['content'], target.split(',')[0]);
+                show_case(data['content'], target.split(',')[1]);
             }
         }
         ,
@@ -110,6 +112,25 @@ function auto_load(id, url, target, type) {
 /*新增内容ajax*/
 function add_data_ajax(id, url) {
         var data = $(id).serializeJSON();
+        if(id === '#add_case'){
+            // 封装前置后置用例为list, [[id, case_name]]
+            if($('#prepos_case_id option:selected').val() === ''
+                && $('#postpos_case_id option:selected').val() === ''){
+                data['prepos_case'] = [];
+                data['postpos_case'] = [];
+            }else if($('#prepos_case_id option:selected').val() !== ''
+                && $('#postpos_case_id option:selected').val() === ''){
+                data['prepos_case'] = [[$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()]];
+                data['postpos_case'] = [];
+            }else if($('#prepos_case_id option:selected').val() === ''
+                && $('#postpos_case_id option:selected').val() !== ''){
+                data['prepos_case'] = [];
+                data['postpos_case'] = [[$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()]];
+            }else{
+                data['prepos_case'] = [[$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()]];
+                data['postpos_case'] = [[$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()]];
+            }
+        }
         $.ajax({
             type: 'post',
             url: url,
@@ -122,7 +143,7 @@ function add_data_ajax(id, url) {
                         window.location.href = '/data/project_list/1'
                     }else if(id.indexOf('module') !== -1){
                         window.location.href = '/data/module_list/1'
-                    }else if(id.indexOf('case') !== -1) {
+                    }else if(id.indexOf('case') !== -1){
                         window.location.href = '/data/case_list/1'
                     }else if(id.indexOf('script') !== -1) {
                         window.location.href = '/data/script_list/1'
@@ -135,12 +156,30 @@ function add_data_ajax(id, url) {
                 myAlert('Sorry，服务器可能开小差啦, 请重试!');
             }
         });
-
     }
 
 /*更新内容ajax*/
 function update_data_ajax(id, url) {
     var data = $(id).serializeJSON();
+    if(id === '#list_case'){
+        // 封装前置后置用例为list, [[id, case_name]]
+        if($('#prepos_case_id option:selected').val() === ''
+            && $('#postpos_case_id option:selected').val() === ''){
+            data['prepos_case'] = [];
+            data['postpos_case'] = [];
+        }else if($('#prepos_case_id option:selected').val() !== ''
+            && $('#postpos_case_id option:selected').val() === ''){
+            data['prepos_case'] = [[$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()]];
+            data['postpos_case'] = [];
+        }else if($('#prepos_case_id option:selected').val() === ''
+            && $('#postpos_case_id option:selected').val() !== ''){
+            data['prepos_case'] = [];
+            data['postpos_case'] = [[$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()]];
+        }else{
+            data['prepos_case'] = [[$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()]];
+            data['postpos_case'] = [[$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()]];
+        }
+    }
     $.ajax({
         type: 'post',
         url: url,
@@ -201,79 +240,6 @@ function copy_data_ajax(id, url) {
             }
             else {
                 window.location.reload();
-            }
-        },
-        error: function () {
-            myAlert('Sorry，服务器可能开小差啦, 请重试!');
-        }
-    });
-}
-
-function case_ajax(type) {
-    var url = $("#url").serializeJSON();
-    var method = $("#method").serializeJSON();
-    var dataType = $("#DataType").serializeJSON();
-    var caseInfo = $("#form_message").serializeJSON();
-    var variables = $("#form_variables").serializeJSON();
-    var request_data = null;
-    if (dataType.DataType === 'json') {
-        try {
-            request_data = eval('(' + $('#json-input').val() + ')');
-        }
-        catch (err) {
-            myAlert('Json格式输入有误！')
-            return
-        }
-    } else {
-        request_data = $("#form_request_data").serializeJSON();
-    }
-    var headers = $("#form_request_headers").serializeJSON();
-    var extract = $("#form_extract").serializeJSON();
-    var validate = $("#form_validate").serializeJSON();
-    var parameters = $('#form_params').serializeJSON();
-    var hooks = $('#form_hooks').serializeJSON();
-    var include = [];
-    var i = 0;
-    $("ul#pre_case li a").each(function () {
-        include[i++] = [$(this).attr('id'), $(this).text()];
-    });
-    caseInfo['include'] = include;
-    const test = {
-        "test": {
-            "name": caseInfo,
-            "parameters": parameters,
-            "variables": variables,
-            "request": {
-                "url": url.url,
-                "method": method.method,
-                "headers": headers,
-                "type": dataType.DataType,
-                "request_data": request_data
-            },
-            "extract": extract,
-            "validate": validate,
-            "hooks": hooks,
-        }
-    };
-    if (type === 'edit') {
-        url = '/api/edit_case/';
-    } else {
-        url = '/api/add_case/';
-    }
-    $.ajax({
-        type: 'post',
-        url: url,
-        data: JSON.stringify(test),
-        contentType: "application/json",
-        success: function (data) {
-            if (data === 'session invalid') {
-                window.location.href = "/api/login/";
-            } else {
-                if (data.indexOf('/api/') != -1) {
-                    window.location.href = data;
-                } else {
-                    myAlert(data);
-                }
             }
         },
         error: function () {
