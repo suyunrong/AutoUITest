@@ -6,6 +6,7 @@ import logging
 
 logger = logging.getLogger('AutoUITest')
 
+
 def add_register_data(**kwargs):
     '''
     用户注册逻辑
@@ -84,7 +85,8 @@ def del_project_data(id):
         project_name = ProjectInfo.objects.get(id=id).project_name
         belong_modules = ModuleInfo.objects.filter(belong_project__project_name=project_name).values_list('module_name')
         for module_name in belong_modules:
-            belong_testcase = TestCaseInfo.objects.filter(belong_module__module_name=module_name[0]).values_list('case_name')
+            belong_testcase = TestCaseInfo.objects.filter(belong_module__module_name=module_name[0]).values_list(
+                'case_name')
             for case_name in belong_testcase:
                 TestCaseScriptInfo.objects.filter(belong_testcase__case_name=case_name[0]).delete()
                 TestCaseInfo.objects.filter(case_name__exact=case_name).delete()
@@ -115,7 +117,7 @@ def add_module_data(type=True, **kwargs):
             if kwargs.get('test_user') is '':
                 return get_ajax_msg('sorry', '测试人员不能为空')
 
-            if module_info.filter(belong_project__project_name__exact=belong_project)\
+            if module_info.filter(belong_project__project_name__exact=belong_project) \
                     .filter(module_name__exact=module_name).count() < 1:
                 try:
                     belong_project = ProjectInfo.objects.get(project_name__exact=belong_project)
@@ -134,7 +136,7 @@ def add_module_data(type=True, **kwargs):
         try:
             if module_name != module_info.get(id=kwargs.get('index')).module_name \
                     and module_info.filter(belong_project__project_name__exact=belong_project) \
-                        .filter(module_name__exact=module_name).count() >0:
+                    .filter(module_name__exact=module_name).count() > 0:
                 return get_ajax_msg('sorry', '模块名已经在项目中存在，请更换模块名')
 
             module_obj = module_info.get(id=kwargs.pop('index'))
@@ -172,7 +174,6 @@ def del_module_data(id):
 
 
 def add_case_data(type=True, **kwargs):
-
     case_info = TestCaseInfo.objects
     belong_project = kwargs.get('belong_project')
     belong_module = kwargs.get('belong_module')
@@ -208,7 +209,7 @@ def add_case_data(type=True, **kwargs):
         try:
             if case_name != case_info.get(id=kwargs.get('index')).case_name \
                     and case_info.filter(belong_project__exact=belong_project) \
-                        .filter(belong_module__module_name=belong_module).count() >0:
+                    .filter(belong_module__module_name=belong_module).count() > 0:
                 return get_ajax_msg('sorry', '用例名已经在项目中存在，请更换用例名')
             try:
                 belong_module = ModuleInfo.objects.get(module_name__exact=belong_module);

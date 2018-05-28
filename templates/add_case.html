@@ -1,115 +1,153 @@
 {% extends "base.html" %}
 {% block title %}新增用例{% endblock %}
 {% load staticfiles %}
+
 {% block content %}
 
-    <div class=" admin-content">
+    <div class="admin-biaogelist" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 
-        <div class="admin-biaogelist">
-            <div class="listbiaoti am-cf">
-                <ul class="am-icon-flag on"> 新增用例</ul>
-                <dl class="am-icon-home" style="float: right;"> 当前位置： 用例管理 > <a href="#">新增用例</a></dl>
-            </div>
-            <div class="fbneirong">
-                <form class="form-horizontal" id="add_case">
-                    <div class="form-group  has-feedback">
-                        <label class="control-label col-md-2 text-primary" for="case_name">用例名称：</label>
-                        <div class="col-md-5">
-                            <input type="text" class="form-control" id="case_name"
-                                   aria-describedby="inputSuccess3Status" name="case_name" placeholder="请输入用例名称"
-                                   value="">
-                            <span class="glyphicon glyphicon-th-list form-control-feedback" aria-hidden="true"></span>
+        <div class="listbiaoti am-cf">
+            <ul class="am-icon-flag on"> 用例编辑</ul>
+            <dl class="am-icon-home" style="float: right;">当前位置： 用例管理 > <a href="#">新增用例</a></dl>
+        </div>
+
+        <div class="am-tabs am-margin">
+            <ul class="am-tabs-nav am-nav am-nav-tabs" id="tab-test">
+                <li><a href="javascript:;" data-target="#tab1">用例信息</a></li>
+                <li><a href="javascript:;" data-target="#tab2">脚本信息</a></li>
+            </ul>
+
+            <div class="am-tabs-bd">
+                <div class="am-tab-panel" id="tab1">
+                    <form class="form-horizontal" id="form_case_message">
+                        <div class="form-group">
+                            <div class="input-group col-md-5 col-md-offset-1">
+                                <div class="input-group-addon" style="color: #0a628f">用例名称</div>
+                                <input type="text" class="form-control" id="case_name" name="case_name"
+                                       placeholder="用例名称">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-2 text-primary" for="belong_project">所属项目：</label>
-                        <div class="col-md-5">
-                            <select id='belong_project' name="belong_project" class="form-control"
-                                        onchange="auto_load('#add_case', '{% url 'choose' %}',
+
+                        <div class="form-group">
+                            <div class="input-group col-md-5 col-md-offset-1">
+                                <div class="input-group-addon" style="color: #0a628f">所属项目</div>
+                                <select id='belong_project' name="belong_project" class="form-control"
+                                        onchange="auto_load('#form_case_message', '{% url 'choose' %}',
                                                 '#belong_module_id', 'module')">
-                                <option value="请选择">请选择</option>
-                                {% for foo in project_data %}
-                                    <option value="{{ foo.project_name }}">{{ foo.project_name }}</option>
-                                {% endfor %}
-                            </select>
+                                    <option value="请选择">请选择</option>
+                                    {% for foo in project_data %}
+                                        <option value="{{ foo.project_name }}">{{ foo.project_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-md-2 text-primary" for="belong_module">所属模块：</label>
-                        <div class="col-md-5">
-                            <select id="belong_module_id" name="belong_module" class="form-control"
-                                        onchange="auto_load('#add_case', '{% url 'choose' %}',
+                        <div class="form-group">
+                            <div class="input-group col-md-5 col-md-offset-1">
+                                <div class="input-group-addon" style="color: #0a628f">所属模块</div>
+                                <select id="belong_module_id" name="belong_module" class="form-control"
+                                        onchange="auto_load('#form_case_message', '{% url 'choose' %}',
                                                 '#prepos_case_id,#postpos_case_id', 'case')">
-                            </select>
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group  has-feedback">
-                        <label class="control-label col-md-2 text-primary" for="author">所有者：</label>
-                        <div class="col-md-5">
-                            <input type="text" class="form-control" id="author" name="author"
-                                   aria-describedby="inputSuccess3Status" placeholder="请输入所有者" value="{{ account }}">
-                            <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
+                        <div class="form-group">
+                            <div class="input-group col-md-5 col-md-offset-1">
+                                <div class="input-group-addon" style="color: #0a628f">编写人员</div>
+                                <input type="text" class="form-control" id="author" name="author"
+                                       placeholder="用例编写人员" value="{{ account }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group  has-feedback">
-                        <label class="control-label col-md-2 text-primary" for="case_desc">用例描述：</label>
-                        <div class="col-md-5">
-                            <textarea type="text" rows="3" class="form-control" id="case_desc" name="case_desc"
-                                      aria-describedby="inputSuccess3Status" placeholder="用例描述"></textarea>
-                            <span class="glyphicon glyphicon-paperclip form-control-feedback" aria-hidden="true"></span>
+                        <div class="form-group">
+                            <div class="input-group col-md-5 col-md-offset-1">
+                                <div class="input-group-addon" style="color: #0a628f">用例描述</div>
+                                <textarea type="text" class="form-control" id="case_desc" name="case_desc"
+                                          placeholder="用例描述"></textarea>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group  has-feedback">
-                        <label class="control-label col-md-2 text-primary" for="prepos_case">前置用例：</label>
-                        <div class="col-md-5">
-                            <select id="prepos_case_id" name="prepos_case" class="form-control">
-                            </select>
+                        <div class="form-group">
+                            <div class="input-group col-md-5 col-md-offset-1">
+                                <div class="input-group-addon" style="color: #0a628f">前置用例</div>
+                                <select id="prepos_case_id" name="prepos_case" class="form-control"></select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group  has-feedback">
-                        <label class="control-label col-md-2 text-primary" for="postpos_case">后置用例：</label>
-                        <div class="col-md-5">
-                            <select id="postpos_case_id" name="postpos_case" class="form-control">
-                            </select>
+                        <div class="form-group">
+                            <div class="input-group col-md-5 col-md-offset-1">
+                                <div class="input-group-addon" style="color: #0a628f">后置用例</div>
+                                <select id="postpos_case_id" name="postpos_case" class="form-control"></select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group  has-feedback">
-                        <label class="control-label col-md-2 text-primary" for="is_execute">是否执行：</label>
-                        <div class="col-md-5 controls">
-                            <input type="checkbox" id="is_execute" name="is_execute" checked/>
+                        <div class="form-group">
+                            <div class="input-group col-md-5 col-md-offset-1">
+                                <div class="input-group-addon" style="color: #0a628f">是否执行</div>&nbsp;
+                                <input type="checkbox" id="is_execute" name="is_execute" class="form-control" checked/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="am-form-group am-cf">
-                        <div class="you" style="margin-left: 17%;">
-                            <a type="submit" href="{% url 'case_list' id=1 %}" class="am-btn am-btn-secondary am-radius">用例列表</a>
-                            &laquo; &nbsp;
-                            <button type="button" class="am-btn am-btn-success am-radius"
-                                    onclick="add_data_ajax('#add_case', '{% url 'add_case' %}')">点 击 提 交
-                            </button>&nbsp;
-                            &raquo; &nbsp;
-                            <a type="submit" href="/api/add_case/" class="am-btn am-btn-secondary am-radius">新 增 脚本</a>
 
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
+
+                <div class="am-tab-panel" id="tab2">
+                    <button class="btn btn-info" value="添 加" onclick="add_row('script_step')">添加步骤</button>
+                    <button class="btn btn-danger" value="删 除" onclick="del_row('script_step')">删除步骤</button>
+
+                    <form id="form_script_message">
+                        <table class="table table-hover table-condensed table-bordered table-striped" id="script_step">
+                            <thead>
+                            <caption>脚本步骤</caption>
+                            <tr class="active text-success">
+                                <th width="4%" align="center" style="text-align: center;" >步骤</th>
+                                <th width="20%" align="center" style="text-align: center;" >步骤描述</th>
+                                <th width="20%" align="center" style="text-align: center;" >元素定位</th>
+                                <th width="15%" align="center" style="text-align: center;" >页面操作</th>
+                                <th width="20%" align="center" style="text-align: center;" >页面操作值</th>
+                                <th width="14%" align="center" style="text-align: center;" >页面预期值</th>
+                                <th width="7%" align="center" style="text-align: center;" >睡眠时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="am-form-group am-cf">
+            <div class="you" style="margin-left: 11%;">
+                <a type="submit" href="{% url 'case_list' id=1 %}" class="am-btn am-btn-secondary am-radius">用 例 列 表</a>
+                &laquo; &nbsp;
+                <button type="button" class="am-btn am-btn-success am-radius" onclick="case_ajax()">点 击 提 交
+                </button>&nbsp;
+                &raquo; &nbsp;
+                <a type="submit" href="/api/add_config/" class="am-btn am-btn-secondary am-radius">新 增 配 置</a>
+
             </div>
         </div>
     </div>
-    <script type="application/javascript">
-        $(document).ready(function(){
+    <script type="text/javascript">
+
+        $(document).ready(function () {
             $("#is_execute").bootstrapSwitch();
         });
 
-        $("#is_execute").on('switchChange.bootstrapSwitch', function (event,data) {
+        $("#is_execute").on('switchChange.bootstrapSwitch', function (event, data) {
             {# 后台只识别首写字母为大写的boolean #}
             $("#is_execute").attr('value', data);
         });
+
+        $("#tab-test").on("click", "li", function () {
+            $(this).addClass("am-active").siblings("li").removeClass("am-active");
+            var target = $(this).children("a").attr("data-target");
+            $(target).addClass("am-active").siblings(".am-tab-panel").removeClass("am-active");
+        }).find("li").eq(0).trigger("click");
 
     </script>
 {% endblock %}

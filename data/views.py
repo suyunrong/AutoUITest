@@ -2,8 +2,8 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
 from .utils.pagination import get_pager_info
-from .models import ProjectInfo, ModuleInfo, TestCaseInfo,EnvInfo
-from .utils.operation import add_project_data, del_project_data, add_module_data, del_module_data, add_case_data,\
+from .models import ProjectInfo, ModuleInfo, TestCaseInfo, EnvInfo
+from .utils.operation import add_project_data, del_project_data, add_module_data, del_module_data, add_case_data, \
     choose_data
 from .utils.common import get_ajax_msg, set_filter_session, load_modules, load_cases
 import logging

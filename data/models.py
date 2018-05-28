@@ -62,9 +62,10 @@ class TestCaseInfo(BaseModel):
     belong_project = models.CharField('所属项目', max_length=64)
     belong_module = models.ForeignKey(ModuleInfo, on_delete=models.CASCADE)
     case_desc = models.TextField('用例描述', null=True)
-    author = models.CharField('所有者', max_length=32)
+    author = models.CharField('编写人员', max_length=32)
     prepos_case = models.CharField('前置用例', max_length=250, null=True)
     postpos_case = models.CharField('后置用例', max_length=250, null=True)
+    case_script = models.TextField('测试脚本')
     is_execute = models.BooleanField('是否执行', default=False)
 
     def __str__(self):

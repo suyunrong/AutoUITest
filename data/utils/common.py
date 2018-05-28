@@ -1,5 +1,6 @@
 from data.models import ModuleInfo, TestCaseInfo
 
+
 def get_ajax_msg(msg, content):
     '''
     ajax请求返回方法

@@ -67,7 +67,7 @@ function info_ajax(id, url) {
 /* 动态获取值 */
 function auto_load(id, url, target, type) {
     var data = $(id).serializeJSON();
-    if (id === '#add_case' || id === '#list_case') {
+    if (id === '#form_case_message' || id === '#list_case') {
         data = {
             "testcase": {
                 "name": data,
@@ -111,71 +111,22 @@ function auto_load(id, url, target, type) {
 
 /*新增内容ajax*/
 function add_data_ajax(id, url) {
-        var data = $(id).serializeJSON();
-        if(id === '#add_case'){
-            // 封装前置后置用例为list, [[id, case_name]]
-            if($('#prepos_case_id option:selected').val() === ''
-                && $('#postpos_case_id option:selected').val() === ''){
-                data['prepos_case'] = [];
-                data['postpos_case'] = [];
-            }else if($('#prepos_case_id option:selected').val() !== ''
-                && $('#postpos_case_id option:selected').val() === ''){
-                data['prepos_case'] = [[$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()]];
-                data['postpos_case'] = [];
-            }else if($('#prepos_case_id option:selected').val() === ''
-                && $('#postpos_case_id option:selected').val() !== ''){
-                data['prepos_case'] = [];
-                data['postpos_case'] = [[$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()]];
-            }else{
-                data['prepos_case'] = [[$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()]];
-                data['postpos_case'] = [[$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()]];
-            }
-        }
-        $.ajax({
-            type: 'post',
-            url: url,
-            data: JSON.stringify(data),
-            contentType: "application/json",
-            success: function (data) {
-                if(data['msg'] === 'ok'){
-                    myAlert(data['content']);
-                    if(id.indexOf('project') !== -1){
-                        window.location.href = '/data/project_list/1'
-                    }else if(id.indexOf('module') !== -1){
-                        window.location.href = '/data/module_list/1'
-                    }else if(id.indexOf('case') !== -1){
-                        window.location.href = '/data/case_list/1'
-                    }else if(id.indexOf('script') !== -1) {
-                        window.location.href = '/data/script_list/1'
-                    }
-                }else{
-                    myAlert(data['content'])
-                }
-            },
-            error: function () {
-                myAlert('Sorry，服务器可能开小差啦, 请重试!');
-            }
-        });
-    }
-
-/*更新内容ajax*/
-function update_data_ajax(id, url) {
     var data = $(id).serializeJSON();
-    if(id === '#list_case'){
+    if (id === '#add_case') {
         // 封装前置后置用例为list, [[id, case_name]]
-        if($('#prepos_case_id option:selected').val() === ''
-            && $('#postpos_case_id option:selected').val() === ''){
+        if ($('#prepos_case_id option:selected').val() === ''
+            && $('#postpos_case_id option:selected').val() === '') {
             data['prepos_case'] = [];
             data['postpos_case'] = [];
-        }else if($('#prepos_case_id option:selected').val() !== ''
-            && $('#postpos_case_id option:selected').val() === ''){
+        } else if ($('#prepos_case_id option:selected').val() !== ''
+            && $('#postpos_case_id option:selected').val() === '') {
             data['prepos_case'] = [[$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()]];
             data['postpos_case'] = [];
-        }else if($('#prepos_case_id option:selected').val() === ''
-            && $('#postpos_case_id option:selected').val() !== ''){
+        } else if ($('#prepos_case_id option:selected').val() === ''
+            && $('#postpos_case_id option:selected').val() !== '') {
             data['prepos_case'] = [];
             data['postpos_case'] = [[$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()]];
-        }else{
+        } else {
             data['prepos_case'] = [[$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()]];
             data['postpos_case'] = [[$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()]];
         }
@@ -186,10 +137,59 @@ function update_data_ajax(id, url) {
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function (data) {
-            if(data['msg'] === 'ok'){
+            if (data['msg'] === 'ok') {
+                myAlert(data['content']);
+                if (id.indexOf('project') !== -1) {
+                    window.location.href = '/data/project_list/1'
+                } else if (id.indexOf('module') !== -1) {
+                    window.location.href = '/data/module_list/1'
+                } else if (id.indexOf('case') !== -1) {
+                    window.location.href = '/data/case_list/1'
+                } else if (id.indexOf('script') !== -1) {
+                    window.location.href = '/data/script_list/1'
+                }
+            } else {
+                myAlert(data['content'])
+            }
+        },
+        error: function () {
+            myAlert('Sorry，服务器可能开小差啦, 请重试!');
+        }
+    });
+}
+
+/*更新内容ajax*/
+function update_data_ajax(id, url) {
+    var data = $(id).serializeJSON();
+    if (id === '#list_case') {
+        // 封装前置后置用例为list, [[id, case_name]]
+        if ($('#prepos_case_id option:selected').val() === ''
+            && $('#postpos_case_id option:selected').val() === '') {
+            data['prepos_case'] = [];
+            data['postpos_case'] = [];
+        } else if ($('#prepos_case_id option:selected').val() !== ''
+            && $('#postpos_case_id option:selected').val() === '') {
+            data['prepos_case'] = [[$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()]];
+            data['postpos_case'] = [];
+        } else if ($('#prepos_case_id option:selected').val() === ''
+            && $('#postpos_case_id option:selected').val() !== '') {
+            data['prepos_case'] = [];
+            data['postpos_case'] = [[$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()]];
+        } else {
+            data['prepos_case'] = [[$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()]];
+            data['postpos_case'] = [[$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()]];
+        }
+    }
+    $.ajax({
+        type: 'post',
+        url: url,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: function (data) {
+            if (data['msg'] === 'ok') {
                 myAlert(data['content']);
                 window.location.reload();
-            }else{
+            } else {
                 myAlert(data['content'])
             }
         },
@@ -211,10 +211,10 @@ function del_data_ajax(id, url) {
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function (data) {
-            if(data['msg'] === 'ok'){
+            if (data['msg'] === 'ok') {
                 myAlert(data['content']);
                 window.location.reload();
-            }else{
+            } else {
                 myAlert(data['content'])
             }
         },
@@ -351,53 +351,29 @@ function add_row(id) {
     var rowsNum = tabObj.rows.length;  //获取当前行数
     var style = 'width:100%; border: none';
     var cell_check = "<input type='checkbox' name='" + id + "' style='width:55px' />";
-    var cell_key = "<input type='text' name='test[][key]'  value='' style='" + style + "' />";
-    var cell_value = "<input type='text' name='test[][value]'  value='' style='" + style + "' />";
-    var cell_type = "<select name='test[][type]' class='form-control' style='height: 25px; font-size: 15px; " +
-        "padding-top: 0px; padding-left: 0px; border: none'> " +
-        "<option>string</option><option>int</option><option>float</option><option>boolean</option></select>";
-    var cell_comparator = "<select name='test[][comparator]' class='form-control' style='height: 25px; font-size: 15px; " +
-        "padding-top: 0px; padding-left: 0px; border: none'> " +
-        "<option>equals</option> <option>contains</option> <option>startswith</option> <option>endswith</option> <option>regex_match</option> <option>type_match</option> <option>contained_by</option> <option>less_than</option> <option>less_than_or_equals</option> <option>greater_than</option> <option>greater_than_or_equals</option> <option>not_equals</option> <option>string_equals</option> <option>length_equals</option> <option>length_greater_than</option> <option>length_greater_than_or_equals</option> <option>length_less_than</option> <option>length_less_than_or_equals</option></select>";
+    var cell_step_desc = "<input type='text' name=''  value='' style='" + style + "' />";
+    var cell_ele_pos = "<input type='text' name=''  value='' style='" + style + "' />";
+    var cell_page_oper = "<input type='text' name=''  value='' style='" + style + "' />";
+    var cell_page_oper_val = "<input type='text' name=''  value='' style='" + style + "' />";
+    var cell_page_exp = "<input type='text' name=''  value='' style='" + style + "' />";
+    var cell_slepp_time = "<input type='text' name=''  value='' style='" + style + "' />";
 
     var myNewRow = tabObj.insertRow(rowsNum);
     var newTdObj0 = myNewRow.insertCell(0);
     var newTdObj1 = myNewRow.insertCell(1);
     var newTdObj2 = myNewRow.insertCell(2);
-
+    var newTdObj3 = myNewRow.insertCell(3);
+    var newTdObj4 = myNewRow.insertCell(4);
+    var newTdObj5 = myNewRow.insertCell(5);
+    var newTdObj6 = myNewRow.insertCell(6);
 
     newTdObj0.innerHTML = cell_check
-    newTdObj1.innerHTML = cell_key;
-    if (id === 'variables' || id === 'data') {
-        var newTdObj3 = myNewRow.insertCell(3);
-        newTdObj2.innerHTML = cell_type;
-        newTdObj3.innerHTML = cell_value;
-    } else if (id === 'validate') {
-        var newTdObj3 = myNewRow.insertCell(3);
-        newTdObj2.innerHTML = cell_comparator;
-        newTdObj3.innerHTML = cell_type;
-        var newTdObj4 = myNewRow.insertCell(4);
-        newTdObj4.innerHTML = cell_value;
-    } else {
-        newTdObj2.innerHTML = cell_value;
-    }
-}
-
-function add_params(id) {
-    var tabObj = document.getElementById(id);//获取添加数据的表格
-    var rowsNum = tabObj.rows.length;  //获取当前行数
-    var style = 'width:100%; border: none';
-    var check = "<input type='checkbox' name='" + id + "' style='width:55px' />";
-    var placeholder = '单个:["value1", "value2],  多个:[["name1", "pwd1"],["name2","pwd2"]]';
-    var key = "<textarea  name='test[][key]'  placeholder='单个:key, 多个:key1-key2'  style='" + style + "' />";
-    var value = "<textarea  name='test[][value]'  placeholder='" + placeholder + "' style='" + style + "' />";
-    var myNewRow = tabObj.insertRow(rowsNum);
-    var newTdObj0 = myNewRow.insertCell(0);
-    var newTdObj1 = myNewRow.insertCell(1);
-    var newTdObj2 = myNewRow.insertCell(2);
-    newTdObj0.innerHTML = check;
-    newTdObj1.innerHTML = key;
-    newTdObj2.innerHTML = value;
+    newTdObj1.innerHTML = cell_step_desc;
+    newTdObj2.innerHTML = cell_ele_pos;
+    newTdObj3.innerHTML = cell_page_oper;
+    newTdObj4.innerHTML = cell_page_oper_val;
+    newTdObj5.innerHTML = cell_page_exp;
+    newTdObj6.innerHTML = cell_slepp_time;
 }
 
 
