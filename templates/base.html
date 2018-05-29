@@ -90,8 +90,20 @@
             </li>
             <li>
                 <button type="button" class="am-btn am-btn-default am-radius am-btn-xs"
-                        onclick="location='/api/add_module/'">新增模块
+                        onclick="location='{% url 'add_module' %}'">新增模块
                     <a href="{% url 'add_module' %}" class="am-close am-close-spin">~</a></button>
+            </li>
+            <li>
+                <button type="button" class="am-btn am-btn-default am-radius am-btn-xs"
+                        onclick="location='{% url 'add_case' %}'">新增用例<a
+                        href="{% url 'add_case' %}" class="am-close am-close-spin">~</a>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="am-btn am-btn-default am-radius am-btn-xs"
+                        onclick="location='{% url 'case_list' id=1 %}'">用例列表<a
+                        href="{% url 'case_list' id=1 %}" class="am-close am-close-spin">~</a>
+                </button>
             </li>
             <li>
                 <button type="button" class="am-btn am-btn-default am-radius am-btn-xs"
@@ -101,20 +113,8 @@
             </li>
             <li>
                 <button type="button" class="am-btn am-btn-default am-radius am-btn-xs"
-                        onclick="location='/api/add_case/'">新增用例<a
-                        href="{% url 'add_case' %}" class="am-close am-close-spin">~</a>
-                </button>
-            </li>
-            <li>
-                <button type="button" class="am-btn am-btn-default am-radius am-btn-xs"
                         onclick="location='/api/add_task/'">新增任务<a
                         href="/api/add_task/" class="am-close am-close-spin">~</a>
-                </button>
-            </li>
-            <li>
-                <button type="button" class="am-btn am-btn-default am-radius am-btn-xs"
-                        onclick="location='/api/test_list/1/'">用例列表<a
-                        href="{% url 'case_list' id=1 %}" class="am-close am-close-spin">~</a>
                 </button>
             </li>
         </ul>

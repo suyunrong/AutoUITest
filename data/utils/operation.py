@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import DataError
 from data.models import UserInfo, ProjectInfo, ModuleInfo, TestCaseInfo, TestCaseScriptInfo
-from data.utils.common import get_ajax_msg, load_modules, load_cases, load_cases_list
+from data.utils.common import get_ajax_msg, load_modules, load_cases
 import logging
 
 logger = logging.getLogger('AutoUITest')
@@ -180,19 +180,20 @@ def add_case_data(type=True, **kwargs):
     belong_project = case_json.get('belong_project')
     belong_module = case_json.get('belong_module')
     case_name = case_json.get('case_name')
+
+    if case_json.get('case_name') is '':
+        return get_ajax_msg('sorry', '用例名称不能为空')
+    if case_json.get('belong_project') is '':
+        return get_ajax_msg('sorry', '所属项目不能为空')
+    if case_json.get('belong_module') is '':
+        return get_ajax_msg('sorry', '所属模块不能为空')
+    if case_json.get('author') is '':
+        return get_ajax_msg('sorry', '所有者不能为空')
+    if scripts_json.get('scripts') is None:
+        return get_ajax_msg('sorry', '脚本不能为空')
+
     if type:
         try:
-            if case_json.get('case_name') is '':
-                return get_ajax_msg('sorry', '用例名称不能为空')
-            if case_json.get('belong_project') is '':
-                return get_ajax_msg('sorry', '所属项目不能为空')
-            if case_json.get('belong_module') is '':
-                return get_ajax_msg('sorry', '所属模块不能为空')
-            if case_json.get('author') is '':
-                return get_ajax_msg('sorry', '所有者不能为空')
-            if scripts_json.get('scripts') is None:
-                return get_ajax_msg('sorry', '脚本不能为空')
-
             if case_info.filter(belong_module_id=belong_module) \
                     .filter(case_name__exact=case_name).count() < 1:
                 try:
@@ -212,27 +213,36 @@ def add_case_data(type=True, **kwargs):
             return get_ajax_msg('sorry', '用例信息过长，请重新编辑')
     else:
         try:
-            if case_name != case_info.get(id=kwargs.get('index')).case_name \
-                    and case_info.filter(belong_project__exact=belong_project) \
-                    .filter(belong_module__module_name=belong_module).count() > 0:
-                return get_ajax_msg('sorry', '用例名已经在项目中存在，请更换用例名')
+            # if case_info.filter(belong_module_id=belong_module) \
+            #         .filter(case_name__exact=case_name).count() < 1:
+            #
+            # else:
+            #     return get_ajax_msg('sorry', '用例名已经在模块中存在，请更换用例名')
+
+            case_name = case_json.get('case_name')
+            if case_name != case_info.get(id=case_json.get('case_index')).case_name \
+                    and case_info.filter(belong_module_id=belong_module).filter(case_name__exact=case_name).count() > 0:
+                return get_ajax_msg('sorry', '用例名已经在模块中存在，请更换用例名')
             try:
-                belong_module = ModuleInfo.objects.get(module_name__exact=belong_module);
+                belong_module = ModuleInfo.objects.get(id=belong_module)
             except ObjectDoesNotExist:
                 logging.error('模块信息读取失败：{belong_module}'.format(belong_module=belong_module))
                 return '模块信息读取失败，请重试'
-            kwargs['belong_module'] = belong_module
-            case_obj = case_info.get(id=kwargs.pop('index'))
-            case_obj.case_name = kwargs.get('case_name')
-            case_obj.belong_module = kwargs.get('belong_module')
-            case_obj.author = kwargs.get('author')
-            case_obj.case_desc = kwargs.get('case_desc')
-            case_obj.prepos_case = kwargs.get('prepos_case')
-            case_obj.postpos_case = kwargs.get('postpos_case')
+
+            case_obj = case_info.get(id=case_json.pop('case_index'))
+            case_obj.case_name = case_json.get('case_name')
+            case_obj.belong_project = belong_project
+            case_obj.belong_module = belong_module
+            case_obj.author = case_json.get('author')
+            case_obj.case_desc = case_json.get('case_desc')
+            case_obj.case_scripts = scripts_json
+            case_obj.prepos_case = case_json.get('prepos_case')
+            case_obj.postpos_case = case_json.get('postpos_case')
             case_obj.save()
 
-            logger.info('用例更新成功: {kwargs}'.format(kwargs=kwargs))
+            logger.info('更新用例：{case_info}'.format(case_info=case_obj))
             return get_ajax_msg('ok', '用例更新成功')
+
         except DataError:
             return get_ajax_msg('sorry', '用例信息过长，请重新编辑')
         except Exception:
@@ -241,15 +251,27 @@ def add_case_data(type=True, **kwargs):
 
 
 def copy_case_data(id, name):
+    """
+    复制用例逻辑
+    :param id:
+    :param name:
+    :return:
+    """
     case_info = TestCaseInfo.objects.get(id=id)
     belong_module = case_info.belong_module
-    if TestCaseInfo.objects.filter(name=name, belong_module=belong_module).count() > 0:
+    if TestCaseInfo.objects.filter(case_name=name, belong_module=belong_module).count() > 0:
         return get_ajax_msg('sorry', '用例名称重复，请重新输入')
     case_info.id = None
-    case_info.name = name
+    case_info.case_name = name
     case_info.save()
     return get_ajax_msg('ok', '用例复制成功')
 
+
+def del_case_data(id):
+    case_name = TestCaseInfo.objects.get(id=id).case_name
+    TestCaseInfo.objects.get(id=id).delete()
+    logging.info('{case_name} 用例已删除'.format(case_name=case_name))
+    return get_ajax_msg('ok', '用例删除成功')
 
 
 def choose_data(**kwargs):
@@ -264,6 +286,4 @@ def choose_data(**kwargs):
         return load_modules(**testcase)
     elif type == 'case':
         return load_cases(**testcase)
-    elif type == 'case_list':
-        return load_cases_list(**testcase)
     # return load_modules(**testcase) if type == 'module' else load_cases(**testcase)

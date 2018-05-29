@@ -4,8 +4,8 @@ from django.shortcuts import render
 from .utils.pagination import get_pager_info
 from .models import ProjectInfo, ModuleInfo, TestCaseInfo, EnvInfo
 from .utils.operation import add_project_data, del_project_data, add_module_data, del_module_data, add_case_data, \
-    choose_data, copy_case_data
-from .utils.common import get_ajax_msg, set_filter_session, load_modules, load_cases
+    choose_data, copy_case_data, del_case_data
+from .utils.common import get_ajax_msg, set_filter_session
 import logging
 import json
 
@@ -148,7 +148,6 @@ def add_case(request):
             manage_info = {
                 'account': account,
                 'project_data': ProjectInfo.objects.all().values('project_name').order_by('-create_time'),
-                # 'module_data': ModuleInfo.objects.all().values('module_name').order_by('-create_time')
             }
             return render(request, "add_case.html", manage_info)
     else:
@@ -180,12 +179,10 @@ def case_list(request, id):
                 return JsonResponse(get_ajax_msg('sorry', '模块信息解析异常'))
             # 包含mode为删除，不包含则为添加
             if  case_json.get('mode') == 'del':
-                pass
+                ajax_dict = del_case_data(id=case_json.get('id'))
             elif case_json.get('mode') == 'copy':
                 ajax_dict = copy_case_data(id=case_json.get('data').pop('index'),
                                            name=case_json.get('data').pop('name'))
-            else:
-                ajax_dict = add_case_data(type=False, **case_json)
             return JsonResponse(ajax_dict)
         else:
             filter_query = set_filter_session(request)
@@ -197,8 +194,32 @@ def case_list(request, id):
                 'page_list': pro_list[0],
                 'info': filter_query,
                 'sum': pro_list[2],
-                'module_data': ModuleInfo.objects.all().values('module_name').order_by('-create_time')
+                # 'module_data': ModuleInfo.objects.all().values('module_name').order_by('-create_time')
             }
             return render(request, 'case_list.html', manage_info)
+    else:
+        return HttpResponseRedirect("/login/")
+
+
+def edit_case(request, id=None):
+    if request.session.get('login_status'):
+        account = request.session["now_account"]
+        if request.is_ajax():
+            try:
+                case_json = json.loads(request.body.decode('utf-8'))
+            except ValueError:
+                logger.error('用例信息解析异常: {case_info}'.format(case_info=case_json))
+                return JsonResponse(get_ajax_msg('sorry', '用例信息解析异常'))
+            ajax_dict = add_case_data(type=False, **case_json)
+            return JsonResponse(ajax_dict)
+        case_info = TestCaseInfo.objects.get(id=id)
+        scripts_info = eval(case_info.case_scripts)
+        manage_info = {
+            'account': account,
+            'case_info': case_info,
+            'scripts_info': scripts_info['scripts'],
+            'project_data': ProjectInfo.objects.all().values('project_name').order_by('-create_time'),
+        }
+        return render(request, "edit_case.html", manage_info)
     else:
         return HttpResponseRedirect("/login/")

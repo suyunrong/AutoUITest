@@ -67,7 +67,7 @@ function info_ajax(id, url) {
 /* 动态获取值 */
 function auto_load(id, url, target, type) {
     var data = $(id).serializeJSON();
-    if (id === '#form_case_message' || id === '#list_case') {
+    if (id === '#form_case_message') {
         data = {
             "testcase": {
                 "name": data,
@@ -188,11 +188,7 @@ function del_data_ajax(id, url) {
 
 // 添加用例
 function add_case_ajax(type) {
-    if (type === 'edit') {
-        url = '';
-    } else {
-        url = '/data/add_case/';
-    }
+
     var caseInfo = $("#form_case_message").serializeJSON();
     var scriptInfo = $("#form_script_message").serializeJSON();
 
@@ -218,6 +214,13 @@ function add_case_ajax(type) {
         "case": caseInfo,
         "scripts": scriptInfo
     }
+
+    if (type === 'edit') {
+        url = '/data/edit_case/';
+    } else {
+        url = '/data/add_case/';
+    }
+
     $.ajax({
         type: 'post',
         url: url,
@@ -238,7 +241,7 @@ function add_case_ajax(type) {
 }
 
 
-
+// 复制
 function copy_data_ajax(id, url) {
     var data = {
         "data": $(id).serializeJSON(),
@@ -366,12 +369,12 @@ function add_row(id) {
     var rowsNum = tabObj.rows.length;  //获取当前行数
     var style = 'width:100%; border: none';
     var cell_check = "<input type='checkbox' name='" + id + "' style='width:55px' />";
-    var cell_step_desc = "<input type='text' name='scripts[][step_desc]'  value='' style='" + style + "' />";
-    var cell_ele_pos = "<input type='text' name='scripts[][ele_pos]'  value='' style='" + style + "' />";
-    var cell_page_oper = "<input type='text' name='scripts[][page_oper]'  value='' style='" + style + "' />";
-    var cell_page_oper_val = "<input type='text' name='scripts[][page_oper_val]'  value='' style='" + style + "' />";
-    var cell_page_exp = "<input type='text' name='scripts[][page_exp]'  value='' style='" + style + "' />";
-    var cell_slepp_time = "<input type='text' name='scripts[][slepp_time]'  value='' style='" + style + "' />";
+    var cell_step_desc = "<input type='text' name='scripts[][step_desc]' value='' style='" + style + "' />";
+    var cell_ele_pos = "<input type='text' name='scripts[][ele_pos]' value='' style='" + style + "' />";
+    var cell_page_oper = "<input type='text' name='scripts[][page_oper]' value='' style='" + style + "' />";
+    var cell_page_oper_val = "<input type='text' name='scripts[][page_oper_val]' value='' style='" + style + "' />";
+    var cell_page_exp = "<input type='text' name='scripts[][page_exp]' value='' style='" + style + "' />";
+    var cell_slepp_time = "<input type='text' name='scripts[][slepp_time]' value='' style='" + style + "' />";
 
     var myNewRow = tabObj.insertRow(rowsNum);
     var newTdObj0 = myNewRow.insertCell(0);

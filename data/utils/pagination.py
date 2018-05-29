@@ -126,7 +126,7 @@ def get_pager_info(Model, filter_query, url, id, per_items=15):
             elif belong_module is not '':
                 obj = obj.filter(belong_module__module_name__contains=belong_module)
             else:
-                obj = obj.filter(name__contains=name) if name is not '' else obj.filter(author__contains=user)
+                obj = obj.filter(case_name__contains=name) if name is not '' else obj.filter(author__contains=user)
 
     if url != '/api/periodictask/':
         obj = obj.order_by('-update_time')

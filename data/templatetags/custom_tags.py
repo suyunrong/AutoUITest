@@ -1,4 +1,5 @@
 from django import template
+from data.models import TestCaseInfo
 
 register = template.Library()
 
@@ -45,3 +46,16 @@ def data_type(value):
     if len(eval_value) == 0:
         return '无'
     return eval_value[1]
+
+
+@register.filter(name='get_prepost_case_name')
+def data_type(value):
+    value = eval(value)
+    return TestCaseInfo.objects.get(id=value[0]).case_name
+
+
+@register.filter(name='get_prepost_case_id')
+def data_type(value):
+    value = eval(value)
+    return TestCaseInfo.objects.get(id=value[0]).id
+
