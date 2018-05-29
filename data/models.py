@@ -55,6 +55,30 @@ class ModuleInfo(BaseModel):
 
 # 测试用例模型
 class TestCaseInfo(BaseModel):
+    '''
+    {
+        'scripts':[
+            {
+                'step_desc': 'xxx',
+                'ele_pos': 'xxx',
+                'page_oper': 'xxx',
+                'page_oper_val': 'xxx',
+                'page_exp': 'xxx',
+                'slepp_time': 'xxx'
+            },
+            {
+                'step_desc': 'xxx',
+                'ele_pos': 'xxx',
+                'page_oper': 'xxx',
+                'page_oper_val': 'xxx',
+                'page_exp': 'xxx',
+                'slepp_time': 'xxx'
+            },
+                ...
+        ],
+        'name': 'name'
+    }
+    '''
     class Meta:
         verbose_name = '测试用例信息'
         db_table = 'TestCaseInfo'
@@ -65,7 +89,7 @@ class TestCaseInfo(BaseModel):
     author = models.CharField('编写人员', max_length=32)
     prepos_case = models.CharField('前置用例', max_length=250, null=True)
     postpos_case = models.CharField('后置用例', max_length=250, null=True)
-    case_script = models.TextField('测试脚本')
+    case_scripts = models.TextField('测试脚本')
     is_execute = models.BooleanField('是否执行', default=False)
 
     def __str__(self):

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from .utils.pagination import get_pager_info
 from .models import ProjectInfo, ModuleInfo, TestCaseInfo, EnvInfo
 from .utils.operation import add_project_data, del_project_data, add_module_data, del_module_data, add_case_data, \
-    choose_data
+    choose_data, copy_case_data
 from .utils.common import get_ajax_msg, set_filter_session, load_modules, load_cases
 import logging
 import json
@@ -179,8 +179,11 @@ def case_list(request, id):
                 logger.error('模块信息解析异常: {case_info}'.format(case_info=case_json))
                 return JsonResponse(get_ajax_msg('sorry', '模块信息解析异常'))
             # 包含mode为删除，不包含则为添加
-            if 'mode' in case_json.keys():
-                ajax_dict = del_module_data(id=case_json.get('id'))
+            if  case_json.get('mode') == 'del':
+                pass
+            elif case_json.get('mode') == 'copy':
+                ajax_dict = copy_case_data(id=case_json.get('data').pop('index'),
+                                           name=case_json.get('data').pop('name'))
             else:
                 ajax_dict = add_case_data(type=False, **case_json)
             return JsonResponse(ajax_dict)

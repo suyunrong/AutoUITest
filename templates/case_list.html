@@ -260,16 +260,22 @@
                         <td>{{ foo.belong_module.module_name }}</td>
                         <td>{{ foo.author }}</td>
                         <td>
-                            {% for precase in foo.prepos_case|convert_eval %}
-                                <a href="/api/edit_case/{{ precase.0 }}/" id="{{ precase.0 }}"
-                                               style="color:rosybrown">{{ precase.1 }}</a>
-                            {% endfor %}
+                            {% if foo.prepos_case|eval_id == '无' %}
+                                {{ foo.prepos_case|eval_name }}
+                            {% else %}
+                                <a href="/api/edit_case/{{ foo.prepos_case|eval_id }}/"
+                                   id="{{ foo.prepos_case|eval_id }}"
+                                   style="color:rosybrown">{{ foo.prepos_case|eval_name }}</a>
+                            {% endif %}
                         </td>
                         <td>
-                            {% for postcase in foo.postpos_case|convert_eval %}
-                                <a href="/api/edit_case/{{ postcase.0 }}/" id="{{ postcase.0 }}"
-                                               style="color:rosybrown">{{ postcase.1 }}</a>
-                            {% endfor %}
+                            {% if foo.postpos_case|eval_id == '无' %}
+                                {{ foo.postpos_case|eval_name }}
+                            {% else %}
+                                <a href="/api/edit_case/{{ foo.postpos_case|eval_id }}/"
+                                   id="{{ foo.postpos_case|eval_id }}"
+                                   style="color:rosybrown">{{ foo.postpos_case|eval_name }}</a>
+                            {% endif %}
                         </td>
                         <td>
                             {% if foo.is_execute %}
@@ -392,7 +398,7 @@
             $('#my-copy').modal({
                 relatedTarget: this,
                 onConfirm: function () {
-                    copy_data_ajax(id, '/api/test_list/1/')
+                    copy_data_ajax(id, '{% url 'case_list' id=1 %}')
                 },
                 onCancel: function () {
                 }

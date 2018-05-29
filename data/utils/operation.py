@@ -174,20 +174,24 @@ def del_module_data(id):
 
 
 def add_case_data(type=True, **kwargs):
+    case_json = kwargs.get('case')
+    scripts_json = kwargs.get('scripts')
     case_info = TestCaseInfo.objects
-    belong_project = kwargs.get('belong_project')
-    belong_module = kwargs.get('belong_module')
-    case_name = kwargs.get('case_name')
+    belong_project = case_json.get('belong_project')
+    belong_module = case_json.get('belong_module')
+    case_name = case_json.get('case_name')
     if type:
         try:
-            if kwargs.get('case_name') is '':
+            if case_json.get('case_name') is '':
                 return get_ajax_msg('sorry', '用例名称不能为空')
-            if kwargs.get('belong_project') is '':
+            if case_json.get('belong_project') is '':
                 return get_ajax_msg('sorry', '所属项目不能为空')
-            if kwargs.get('belong_module') is '':
+            if case_json.get('belong_module') is '':
                 return get_ajax_msg('sorry', '所属模块不能为空')
-            if kwargs.get('author') is '':
+            if case_json.get('author') is '':
                 return get_ajax_msg('sorry', '所有者不能为空')
+            if scripts_json.get('scripts') is None:
+                return get_ajax_msg('sorry', '脚本不能为空')
 
             if case_info.filter(belong_module_id=belong_module) \
                     .filter(case_name__exact=case_name).count() < 1:
@@ -196,9 +200,10 @@ def add_case_data(type=True, **kwargs):
                 except ObjectDoesNotExist:
                     logging.error('模块信息读取失败：{belong_module}'.format(belong_module=belong_module))
                     return '模块信息读取失败，请重试'
-                kwargs['belong_project'] = belong_project
-                kwargs['belong_module'] = belong_module
-                case_info.create(**kwargs)
+                case_json['belong_project'] = belong_project
+                case_json['belong_module'] = belong_module
+                case_json['case_scripts'] = scripts_json
+                case_info.create(**case_json)
                 logger.info('新增用例：{case_info}'.format(case_info=case_info))
                 return get_ajax_msg('ok', '用例添加成功')
             else:
@@ -233,6 +238,18 @@ def add_case_data(type=True, **kwargs):
         except Exception:
             logging.error('更新失败：{kwargs}'.format(kwargs=kwargs))
             return get_ajax_msg('sorry', '更新失败，请重试')
+
+
+def copy_case_data(id, name):
+    case_info = TestCaseInfo.objects.get(id=id)
+    belong_module = case_info.belong_module
+    if TestCaseInfo.objects.filter(name=name, belong_module=belong_module).count() > 0:
+        return get_ajax_msg('sorry', '用例名称重复，请重新输入')
+    case_info.id = None
+    case_info.name = name
+    case_info.save()
+    return get_ajax_msg('ok', '用例复制成功')
+
 
 
 def choose_data(**kwargs):

@@ -85,7 +85,8 @@
                         <div class="form-group">
                             <div class="input-group col-md-5 col-md-offset-1">
                                 <div class="input-group-addon" style="color: #0a628f">是否执行</div>&nbsp;
-                                <input type="checkbox" id="is_execute" name="is_execute" class="form-control" checked/>
+                                <input type="checkbox" id="is_execute" name="is_execute" class="form-control"
+                                       value="True" checked/>
                             </div>
                         </div>
 
@@ -124,7 +125,7 @@
             <div class="you" style="margin-left: 11%;">
                 <a type="submit" href="{% url 'case_list' id=1 %}" class="am-btn am-btn-secondary am-radius">用 例 列 表</a>
                 &laquo; &nbsp;
-                <button type="button" class="am-btn am-btn-success am-radius" onclick="case_ajax()">点 击 提 交
+                <button type="button" class="am-btn am-btn-success am-radius" onclick="add_case_ajax()">点 击 提 交
                 </button>&nbsp;
                 &raquo; &nbsp;
                 <a type="submit" href="/api/add_config/" class="am-btn am-btn-secondary am-radius">新 增 配 置</a>
