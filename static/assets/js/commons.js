@@ -221,6 +221,8 @@ function add_case_ajax(type) {
         url = '/data/add_case/';
     }
 
+    console.log(testcase);
+
     $.ajax({
         type: 'post',
         url: url,

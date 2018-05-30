@@ -65,6 +65,11 @@
                                     <option value="{{ case_info.belong_module.id }}">
                                         {{ case_info.belong_module.module_name }}
                                     </option>
+                                    {% for foo in module_data %}
+                                        {% ifnotequal case_info.belong_module.module_name foo.module_name %}
+                                            <option value="{{ foo.id }}">{{ foo.module_name }}</option>
+                                        {% endifnotequal %}
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -198,6 +203,7 @@
 
         $(document).ready(function () {
             $("#is_execute").bootstrapSwitch();
+            auto_load('#form_case_message', '{% url 'choose' %}','#prepos_case_id,#postpos_case_id', 'case')
         });
 
         $("#is_execute").on('switchChange.bootstrapSwitch', function (event, data) {

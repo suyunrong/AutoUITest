@@ -204,6 +204,8 @@ def add_case_data(type=True, **kwargs):
                 case_json['belong_project'] = belong_project
                 case_json['belong_module'] = belong_module
                 case_json['case_scripts'] = scripts_json
+                if 'is_execute' in case_json.keys():
+                    case_json['is_execute'] = True
                 case_info.create(**case_json)
                 logger.info('新增用例：{case_info}'.format(case_info=case_info))
                 return get_ajax_msg('ok', '用例添加成功')
@@ -213,11 +215,6 @@ def add_case_data(type=True, **kwargs):
             return get_ajax_msg('sorry', '用例信息过长，请重新编辑')
     else:
         try:
-            # if case_info.filter(belong_module_id=belong_module) \
-            #         .filter(case_name__exact=case_name).count() < 1:
-            #
-            # else:
-            #     return get_ajax_msg('sorry', '用例名已经在模块中存在，请更换用例名')
 
             case_name = case_json.get('case_name')
             if case_name != case_info.get(id=case_json.get('case_index')).case_name \
@@ -238,6 +235,10 @@ def add_case_data(type=True, **kwargs):
             case_obj.case_scripts = scripts_json
             case_obj.prepos_case = case_json.get('prepos_case')
             case_obj.postpos_case = case_json.get('postpos_case')
+            if 'is_execute' not in case_json.keys():
+                case_obj.is_execute = False
+            else:
+                case_obj.is_execute = True
             case_obj.save()
 
             logger.info('更新用例：{case_info}'.format(case_info=case_obj))

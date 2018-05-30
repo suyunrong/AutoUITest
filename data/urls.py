@@ -27,4 +27,6 @@ urlpatterns = [
     path('case_list/<int:id>/', views.case_list, name='case_list'),
     path('edit_case/<int:id>/', views.edit_case, name='edit_case_list'),
     path('edit_case/', views.edit_case, name='edit_case'),
+    path('add_env/', views.add_env, name='add_env'),
+    path('env_list/<int:id>', views.env_list, name='env_list'),
 ]

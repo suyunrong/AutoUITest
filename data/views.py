@@ -194,7 +194,6 @@ def case_list(request, id):
                 'page_list': pro_list[0],
                 'info': filter_query,
                 'sum': pro_list[2],
-                # 'module_data': ModuleInfo.objects.all().values('module_name').order_by('-create_time')
             }
             return render(request, 'case_list.html', manage_info)
     else:
@@ -214,12 +213,51 @@ def edit_case(request, id=None):
             return JsonResponse(ajax_dict)
         case_info = TestCaseInfo.objects.get(id=id)
         scripts_info = eval(case_info.case_scripts)
+        project_name = case_info.belong_project
         manage_info = {
             'account': account,
             'case_info': case_info,
             'scripts_info': scripts_info['scripts'],
             'project_data': ProjectInfo.objects.all().values('project_name').order_by('-create_time'),
+            'module_data': ModuleInfo.objects.filter(belong_project__project_name=project_name)
+                .values('id', 'module_name').order_by('-create_time'),
         }
         return render(request, "edit_case.html", manage_info)
+    else:
+        return HttpResponseRedirect("/login/")
+
+
+def add_env(request):
+    pass
+
+
+def env_list(request, id):
+    if request.session.get('login_status'):
+        account = request.session["now_account"]
+        if request.is_ajax():
+            try:
+                env_json = json.loads(request.body.decode('utf-8'))
+            except ValueError:
+                logger.error('环境信息解析异常: {case_info}'.format(case_info=case_json))
+                return JsonResponse(get_ajax_msg('sorry', '环境信息解析异常'))
+            # 包含mode为删除，不包含则为添加
+            if  env_json.get('mode') == 'del':
+                ajax_dict = del_case_data(id=env_json.get('id'))
+            elif env_json.get('mode') == 'copy':
+                ajax_dict = copy_case_data(id=env_json.get('data').pop('index'),
+                                           name=env_json.get('data').pop('name'))
+            return JsonResponse(ajax_dict)
+        else:
+            filter_query = set_filter_session(request)
+            pro_list = get_pager_info(
+                TestCaseInfo, filter_query, '/data/env_list/', id)
+            manage_info = {
+                'account': account,
+                'case': pro_list[1],
+                'page_list': pro_list[0],
+                'info': filter_query,
+                'sum': pro_list[2],
+            }
+            return render(request, 'env_list.html', manage_info)
     else:
         return HttpResponseRedirect("/login/")

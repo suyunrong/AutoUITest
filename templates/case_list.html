@@ -161,7 +161,7 @@
                             {% if foo.prepos_case|eval_id == '无' %}
                                 {{ foo.prepos_case|eval_name }}
                             {% else %}
-                                <a href="/api/edit_case/{{ foo.prepos_case|eval_id }}/"
+                                <a href="{% url 'edit_case_list' id=foo.prepos_case|eval_id %}"
                                    id="{{ foo.prepos_case|eval_id }}"
                                    style="color:rosybrown">{{ foo.prepos_case|eval_name }}</a>
                             {% endif %}
@@ -170,7 +170,7 @@
                             {% if foo.postpos_case|eval_id == '无' %}
                                 {{ foo.postpos_case|eval_name }}
                             {% else %}
-                                <a href="/api/edit_case/{{ foo.postpos_case|eval_id }}/"
+                                <a href="{% url 'edit_case_list' id=foo.postpos_case|eval_id %}"
                                    id="{{ foo.postpos_case|eval_id }}"
                                    style="color:rosybrown">{{ foo.postpos_case|eval_name }}</a>
                             {% endif %}
