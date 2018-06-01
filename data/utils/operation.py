@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import DataError
-from data.models import UserInfo, ProjectInfo, ModuleInfo, TestCaseInfo, TestCaseScriptInfo
+from data.models import UserInfo, ProjectInfo, ModuleInfo, TestCaseInfo, TestCaseScriptInfo, EnvInfo
 from data.utils.common import get_ajax_msg, load_modules, load_cases
 import logging
 
@@ -288,3 +288,47 @@ def choose_data(**kwargs):
     elif type == 'case':
         return load_cases(**testcase)
     # return load_modules(**testcase) if type == 'module' else load_cases(**testcase)
+
+
+def add_env_data(type=True, **kwargs):
+    id = kwargs.pop('index')
+    env_info = EnvInfo.objects
+    env_name = kwargs.get('env_name')
+    if type:
+        try:
+            if kwargs.get('env_name') is '':
+                return get_ajax_msg('sorry', '环境名称不能为空')
+            if kwargs.get('base_url') is '':
+                return get_ajax_msg('sorry', '环境URL不能为空')
+            if kwargs.get('explorer_name') is '':
+                return get_ajax_msg('sorry', '浏览器名称不能为空')
+            if kwargs.get('explorer_version') is '':
+                return get_ajax_msg('sorry', '浏览器版本不能为空')
+            if env_info.filter(env_name__exact=env_name).count() < 1:
+                env_info.create(**kwargs)
+                logger.info('新增环境：{env_info}'.format(env_info=env_info))
+                return get_ajax_msg('ok', '环境添加成功')
+            else:
+                logger.debug('{env_name} 环境名已经存在'.format(env_name=env_name))
+                return get_ajax_msg('sorry', '环境名已经存在，请更换环境名')
+        except:
+            logger.error('信息输入有误：{env_info}'.format(env_info=env_info))
+            return get_ajax_msg('sorry', '环境信息过长，请重新输入')
+    else:
+        try:
+            if env_name != env_info.get(id=id).env_name and env_info.filter(env_name__exact=env_name)> 0:
+                return get_ajax_msg('sorry', '环境名已经在项目中存在，请更换环境名')
+            env_obj = env_info.get(id=id)
+            env_obj.env_name = kwargs.get('env_name')
+            env_obj.base_url = kwargs.get('base_url')
+            env_obj.explorer_name = kwargs.get('explorer_name')
+            env_obj.explorer_version = kwargs.get('explorer_version')
+            env_obj.simple_desc = kwargs.get('simple_desc')
+            env_obj.save()
+            logger.info('环境更新成功: {kwargs}'.format(kwargs=kwargs))
+            return get_ajax_msg('ok', '环境更新成功')
+        except DataError:
+            return get_ajax_msg('sorry', '环境信息过长，请重新编辑')
+        except Exception:
+            logging.error('更新失败：{kwargs}'.format(kwargs=kwargs))
+            return get_ajax_msg('sorry', '更新失败，请重试')

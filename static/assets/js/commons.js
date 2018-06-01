@@ -126,8 +126,8 @@ function add_data_ajax(id, url) {
                     window.location.href = '/data/module_list/1'
                 } else if (id.indexOf('case') !== -1) {
                     window.location.href = '/data/case_list/1'
-                } else if (id.indexOf('script') !== -1) {
-                    window.location.href = '/data/script_list/1'
+                } else if (id.indexOf('env') !== -1) {
+                    window.location.href = '/data/env_list/1'
                 }
             } else {
                 myAlert(data['content'])
@@ -142,6 +142,7 @@ function add_data_ajax(id, url) {
 /*更新内容ajax*/
 function update_data_ajax(id, url) {
     var data = $(id).serializeJSON();
+    console.log(data);
     $.ajax({
         type: 'post',
         url: url,
@@ -220,8 +221,6 @@ function add_case_ajax(type) {
     } else {
         url = '/data/add_case/';
     }
-
-    console.log(testcase);
 
     $.ajax({
         type: 'post',

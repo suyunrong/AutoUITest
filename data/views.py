@@ -4,7 +4,7 @@ from django.shortcuts import render
 from .utils.pagination import get_pager_info
 from .models import ProjectInfo, ModuleInfo, TestCaseInfo, EnvInfo
 from .utils.operation import add_project_data, del_project_data, add_module_data, del_module_data, add_case_data, \
-    choose_data, copy_case_data, del_case_data
+    choose_data, copy_case_data, del_case_data, add_env_data
 from .utils.common import get_ajax_msg, set_filter_session
 import logging
 import json
@@ -228,7 +228,21 @@ def edit_case(request, id=None):
 
 
 def add_env(request):
-    pass
+    if request.session.get('login_status'):
+        if request.is_ajax():
+            try:
+                env_json = json.loads(request.body.decode('utf-8'))
+            except ValueError:
+                logger.error('环境信息解析异常: {env_json}'.format(env_json=env_json))
+                return JsonResponse(get_ajax_msg('sorry', '环境信息解析异常'))
+            index = env_json.get('index')
+            if index == 'add':
+                ajax_dict = add_env_data(**env_json)
+            elif index == 'edit':
+                ajax_dict = add_env_data(type=False, **env_json)
+            return JsonResponse(ajax_dict)
+    else:
+        return HttpResponseRedirect("/login/")
 
 
 def env_list(request, id):
@@ -238,10 +252,12 @@ def env_list(request, id):
             try:
                 env_json = json.loads(request.body.decode('utf-8'))
             except ValueError:
-                logger.error('环境信息解析异常: {case_info}'.format(case_info=case_json))
+                logger.error('环境信息解析异常: {env_json}'.format(env_json=env_json))
                 return JsonResponse(get_ajax_msg('sorry', '环境信息解析异常'))
             # 包含mode为删除，不包含则为添加
-            if  env_json.get('mode') == 'del':
+            if env_json.get('mode') == 'add':
+                ajax_dict = add_env_data(**env_json)
+            elif  env_json.get('mode') == 'del':
                 ajax_dict = del_case_data(id=env_json.get('id'))
             elif env_json.get('mode') == 'copy':
                 ajax_dict = copy_case_data(id=env_json.get('data').pop('index'),
@@ -250,10 +266,10 @@ def env_list(request, id):
         else:
             filter_query = set_filter_session(request)
             pro_list = get_pager_info(
-                TestCaseInfo, filter_query, '/data/env_list/', id)
+                EnvInfo, filter_query, '/data/env_list/', id)
             manage_info = {
                 'account': account,
-                'case': pro_list[1],
+                'env': pro_list[1],
                 'page_list': pro_list[0],
                 'info': filter_query,
                 'sum': pro_list[2],
