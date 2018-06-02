@@ -1,0 +1,22 @@
+[
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 1,
+    "fields":{
+      "ele_name": "Alert",
+      "ele_desc": "Alert弹窗",
+      "create_time": "2018-06-02 12:00:00.000000",
+      "update_time": "2018-06-02 12:00:00.000000"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 2,
+    "fields":{
+      "ele_name": "Text",
+      "ele_desc": "Text文本",
+      "create_time": "2018-06-02 12:00:01.000000",
+      "update_time": "2018-06-02 12:00:00.000000"
+    }
+  }
+]

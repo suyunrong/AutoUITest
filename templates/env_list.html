@@ -101,8 +101,8 @@
                     <th class="table-type">浏览器名称</th>
                     <th class="table-title">浏览器版本</th>
                     <th class="table-title">简要描述</th>
-                    <th class="table-date am-hide-sm-only">创建时间</th>
-                    <th width="163px" class="table-set">操作</th>
+                    <th width="150px" class="table-date am-hide-sm-only">创建时间</th>
+                    <th width="95px" class="table-set">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -183,7 +183,6 @@
             $('#env_model').modal({
                 relatedTarget: this,
                 onConfirm: function () {
-                    $("#index").attr("value", "edit");
                     update_data_ajax('#add_env', '{% url 'add_env' %}');
                 },
                 onCancel: function () {
@@ -196,7 +195,7 @@
             $('#my-invalid').modal({
                 relatedTarget: this,
                 onConfirm: function () {
-                    del_data_ajax(id, '/api/env_set/');
+                    del_data_ajax(id, '{% url 'env_list' id=1 %}');
                 },
                 onCancel: function () {
                 }

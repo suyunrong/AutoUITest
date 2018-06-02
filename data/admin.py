@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from data.models import UserInfo, ProjectInfo, ModuleInfo, TestCaseInfo, TestCaseScriptInfo, EnvInfo
+from data.models import UserInfo, ProjectInfo, ModuleInfo, TestCaseInfo, EnvInfo
 
 
 @admin.register(UserInfo)
@@ -55,17 +55,17 @@ class TestCaseInfoAdmin(admin.ModelAdmin):
     date_hierarchy = 'update_time'  # 详细时间分层筛选
 
 
-@admin.register(TestCaseScriptInfo)
-class TestCaseScriptInfoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'script_desc', 'script_step', 'operate_type', 'element_pos', 'operate_val',
-                    'expect_val', 'sleep_time', 'create_time', 'update_time')
-    list_per_page = 10
-    ordering = ('-create_time',)
-    list_display_links = ('script_desc',)
-    # 筛选器
-    list_filter = ('operate_type', )  # 过滤器
-    search_fields = ('script_desc', 'operate_type')  # 搜索字段
-    date_hierarchy = 'update_time'  # 详细时间分层筛选
+# @admin.register(TestCaseScriptInfo)
+# class TestCaseScriptInfoAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'script_desc', 'script_step', 'operate_type', 'element_pos', 'operate_val',
+#                     'expect_val', 'sleep_time', 'create_time', 'update_time')
+#     list_per_page = 10
+#     ordering = ('-create_time',)
+#     list_display_links = ('script_desc',)
+#     # 筛选器
+#     list_filter = ('operate_type', )  # 过滤器
+#     search_fields = ('script_desc', 'operate_type')  # 搜索字段
+#     date_hierarchy = 'update_time'  # 详细时间分层筛选
 
 
 @admin.register(EnvInfo)

@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import DataError
-from data.models import UserInfo, ProjectInfo, ModuleInfo, TestCaseInfo, TestCaseScriptInfo, EnvInfo
+from data.models import UserInfo, ProjectInfo, ModuleInfo, TestCaseInfo, EnvInfo
 from data.utils.common import get_ajax_msg, load_modules, load_cases
 import logging
 
@@ -16,11 +16,12 @@ def add_register_data(**kwargs):
     user_info = UserInfo.objects
     try:
         username = kwargs.pop('account')
+        nickname = kwargs.pop('nickname')
         password = kwargs.pop('password')
         if user_info.filter(username__exact=username).filter(status=1).count() > 0:
             logger.debug('{username} 已被其他用户注册'.format(username=username))
             return get_ajax_msg('sorry', '该用户名已被注册，请更换用户名')
-        user_info.create(username=username, password=password)
+        user_info.create(username=username, nickname=nickname, password=password)
         logger.info('新增用户：{user_info}'.format(user_info=user_info))
         return get_ajax_msg('ok', '恭喜您，账号注册成功')
     except DataError:
@@ -59,7 +60,11 @@ def add_project_data(type=True, **kwargs):
             return get_ajax_msg('sorry', '项目信息过长，请重新编辑')
     else:
         try:
-            project_obj = project_info.get(id=kwargs.pop('index'))
+            id = kwargs.pop('index')
+            if project_name != project_info.get(id=id).project_name and \
+                project_info.filter(project_name__exact=project_name).count() > 0:
+                return get_ajax_msg('sorry', '项目名已经存在，请更换项目名')
+            project_obj = project_info.get(id=id)
             project_obj.project_name = kwargs.get('project_name')
             project_obj.dev_leader = kwargs.get('dev_leader')
             project_obj.test_leader = kwargs.get('test_leader')
@@ -88,7 +93,6 @@ def del_project_data(id):
             belong_testcase = TestCaseInfo.objects.filter(belong_module__module_name=module_name[0]).values_list(
                 'case_name')
             for case_name in belong_testcase:
-                TestCaseScriptInfo.objects.filter(belong_testcase__case_name=case_name[0]).delete()
                 TestCaseInfo.objects.filter(case_name__exact=case_name).delete()
         ModuleInfo.objects.filter(belong_project__project_name=project_name).delete()
         ProjectInfo.objects.get(id=id).delete()
@@ -163,9 +167,7 @@ def del_module_data(id):
     '''
     try:
         module_name = ModuleInfo.objects.get(id=id).module_name
-        belong_testcase = TestCaseInfo.objects.filter(belong_module__module_name=module_name).values_list('case_name')
-        for case_name in belong_testcase:
-            TestCaseScriptInfo.objects.filter(belong_testcase__case_name=case_name).delete()
+        TestCaseInfo.objects.filter(belong_module__module_name=module_name).delete()
         ModuleInfo.objects.get(id=id).delete()
     except ObjectDoesNotExist:
         return get_ajax_msg('sorry', '模块删除异常，请重试')
@@ -291,6 +293,12 @@ def choose_data(**kwargs):
 
 
 def add_env_data(type=True, **kwargs):
+    """
+    添加、修改环境逻辑
+    :param type:
+    :param kwargs:
+    :return:
+    """
     id = kwargs.pop('index')
     env_info = EnvInfo.objects
     env_name = kwargs.get('env_name')
@@ -316,8 +324,8 @@ def add_env_data(type=True, **kwargs):
             return get_ajax_msg('sorry', '环境信息过长，请重新输入')
     else:
         try:
-            if env_name != env_info.get(id=id).env_name and env_info.filter(env_name__exact=env_name)> 0:
-                return get_ajax_msg('sorry', '环境名已经在项目中存在，请更换环境名')
+            if env_name != env_info.get(id=id).env_name and env_info.filter(env_name__exact=env_name).count() > 0:
+                return get_ajax_msg('sorry', '环境名已经存在，请更换环境名')
             env_obj = env_info.get(id=id)
             env_obj.env_name = kwargs.get('env_name')
             env_obj.base_url = kwargs.get('base_url')
@@ -332,3 +340,10 @@ def add_env_data(type=True, **kwargs):
         except Exception:
             logging.error('更新失败：{kwargs}'.format(kwargs=kwargs))
             return get_ajax_msg('sorry', '更新失败，请重试')
+
+
+def del_env_data(id):
+    env_name = EnvInfo.objects.get(id=id).env_name
+    EnvInfo.objects.get(id=id).delete()
+    logging.info('{env_name} 环境已删除'.format(env_name=env_name))
+    return get_ajax_msg('ok', '环境删除成功')

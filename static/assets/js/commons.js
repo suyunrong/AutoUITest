@@ -112,6 +112,7 @@ function auto_load(id, url, target, type) {
 /*新增内容ajax*/
 function add_data_ajax(id, url) {
     var data = $(id).serializeJSON();
+    console.log(data);
     $.ajax({
         type: 'post',
         url: url,
@@ -142,7 +143,6 @@ function add_data_ajax(id, url) {
 /*更新内容ajax*/
 function update_data_ajax(id, url) {
     var data = $(id).serializeJSON();
-    console.log(data);
     $.ajax({
         type: 'post',
         url: url,
@@ -168,6 +168,7 @@ function del_data_ajax(id, url) {
         "id": id,
         'mode': 'del'
     };
+    console.log(data);
     $.ajax({
         type: 'post',
         url: url,

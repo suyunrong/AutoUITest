@@ -4,7 +4,7 @@ from django.shortcuts import render
 from .utils.pagination import get_pager_info
 from .models import ProjectInfo, ModuleInfo, TestCaseInfo, EnvInfo
 from .utils.operation import add_project_data, del_project_data, add_module_data, del_module_data, add_case_data, \
-    choose_data, copy_case_data, del_case_data, add_env_data
+    choose_data, copy_case_data, del_case_data, add_env_data, del_env_data
 from .utils.common import get_ajax_msg, set_filter_session
 import logging
 import json
@@ -238,7 +238,7 @@ def add_env(request):
             index = env_json.get('index')
             if index == 'add':
                 ajax_dict = add_env_data(**env_json)
-            elif index == 'edit':
+            else:
                 ajax_dict = add_env_data(type=False, **env_json)
             return JsonResponse(ajax_dict)
     else:
@@ -255,14 +255,9 @@ def env_list(request, id):
                 logger.error('环境信息解析异常: {env_json}'.format(env_json=env_json))
                 return JsonResponse(get_ajax_msg('sorry', '环境信息解析异常'))
             # 包含mode为删除，不包含则为添加
-            if env_json.get('mode') == 'add':
-                ajax_dict = add_env_data(**env_json)
-            elif  env_json.get('mode') == 'del':
-                ajax_dict = del_case_data(id=env_json.get('id'))
-            elif env_json.get('mode') == 'copy':
-                ajax_dict = copy_case_data(id=env_json.get('data').pop('index'),
-                                           name=env_json.get('data').pop('name'))
-            return JsonResponse(ajax_dict)
+            if  env_json.get('mode') == 'del':
+                ajax_dict = del_env_data(id=env_json.get('id'))
+                return JsonResponse(ajax_dict)
         else:
             filter_query = set_filter_session(request)
             pro_list = get_pager_info(

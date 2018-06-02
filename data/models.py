@@ -19,6 +19,7 @@ class UserInfo(BaseModel):
         verbose_name = '用户信息'
         db_table = 'UserInfo'
     username = models.CharField('用户名', max_length=20)
+    nickname = models.CharField('昵称', max_length=20)
     password = models.CharField('密码', max_length=20)
     status = models.IntegerField('可用/不可用', default=1)
 
@@ -96,19 +97,19 @@ class TestCaseInfo(BaseModel):
         return self.case_name
 
 
-# 测试脚本模型
-class TestCaseScriptInfo(BaseModel):
-    class Meta:
-        verbose_name = '测试脚本信息'
-        db_table = 'TestCaseScriptInfo'
-    belong_testcase = models.ForeignKey(TestCaseInfo, on_delete=models.CASCADE)
-    script_desc = models.TextField('脚本描述')
-    script_step = models.IntegerField('操作步骤', default=1)
-    operate_type = models.CharField('操作类型', max_length=32)
-    element_pos = models.TextField('元素定位')
-    operate_val = models.TextField('操作值', null=True)
-    expect_val = models.TextField('预期结果', null=True)
-    sleep_time = models.IntegerField('睡眠时间', default=0)
+# # 测试脚本模型
+# class TestCaseScriptInfo(BaseModel):
+#     class Meta:
+#         verbose_name = '测试脚本信息'
+#         db_table = 'TestCaseScriptInfo'
+#     belong_testcase = models.ForeignKey(TestCaseInfo, on_delete=models.CASCADE)
+#     script_desc = models.TextField('脚本描述')
+#     script_step = models.IntegerField('操作步骤', default=1)
+#     operate_type = models.CharField('操作类型', max_length=32)
+#     element_pos = models.TextField('元素定位')
+#     operate_val = models.TextField('操作值', null=True)
+#     expect_val = models.TextField('预期结果', null=True)
+#     sleep_time = models.IntegerField('睡眠时间', default=0)
 
 
 # 测试环境模型
@@ -121,3 +122,12 @@ class EnvInfo(BaseModel):
     explorer_name = models.CharField('浏览器名称', max_length=32)
     explorer_version = models.CharField('浏览器版本', max_length=32)
     simple_desc = models.CharField('简要描述', max_length=120, null=True)
+
+
+# selenium元素模型
+class SeleniumEleInfo(BaseModel):
+    class Meta:
+        verbose_name = 'selenium元素信息'
+        db_table = 'SeleniumEleInfo'
+    ele_name = models.CharField('元素名称', max_length=100)
+    ele_desc = models.CharField('元素描述', max_length=100)
