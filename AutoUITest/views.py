@@ -24,10 +24,11 @@ def login(request):
         password = request.POST.get('password')
         user_info = UserInfo.objects
 
-        if user_info.filter(username__exact=username).filter(password__exact=password).count() == 1:
+        # if user_info.filter(username__exact=username).filter(password__exact=password).count() == 1:
+        if user_info.query_user_count(username, password) == 1:
             logger.info('{username} 登录成功'.format(username=username))
             request.session["login_status"] = True
-            request.session["now_account"] = user_info.get(username__exact=username).nickname
+            request.session["now_account"] = user_info.get_nickname(username)
             return HttpResponseRedirect('/data/index/')
         else:
             logger.info('{username} 登录失败, 请检查用户名或者密码'.format(username=username))

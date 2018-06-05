@@ -21,7 +21,7 @@ def add_register_data(**kwargs):
         if user_info.filter(username__exact=username).filter(status=1).count() > 0:
             logger.debug('{username} 已被其他用户注册'.format(username=username))
             return get_ajax_msg('sorry', '该用户名已被注册，请更换用户名')
-        user_info.create(username=username, nickname=nickname, password=password)
+        user_info.register_user(username=username, nickname=nickname, password=password)
         logger.info('新增用户：{user_info}'.format(user_info=user_info))
         return get_ajax_msg('ok', '恭喜您，账号注册成功')
     except DataError:

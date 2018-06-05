@@ -1,4 +1,5 @@
 from django.db import models
+from .managers import UserManager
 
 # Create your models here.
 
@@ -22,6 +23,8 @@ class UserInfo(BaseModel):
     nickname = models.CharField('昵称', max_length=20)
     password = models.CharField('密码', max_length=20)
     status = models.IntegerField('可用/不可用', default=1)
+
+    objects = UserManager()
 
 
 # 项目模型
