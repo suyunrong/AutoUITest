@@ -1,4 +1,4 @@
-from data.models import ModuleInfo, TestCaseInfo
+from data.models import ModuleInfo, TestCaseInfo, EnvInfo
 
 
 def get_ajax_msg(msg, content):
@@ -75,3 +75,15 @@ def load_cases(**kwargs):
         string = string + str(value[0]) + '^=' + value[1] + 'replaceFlag'
     return get_ajax_msg('ok', string[:len(string) - 11])
 
+
+def load_env_info():
+    env_info = EnvInfo.objects.all().values_list('id', 'env_name').order_by('create_time')
+    env_dict = {}
+    num = 0
+    for value in env_info:
+        env_dict[num] = {
+            'id': value[0],
+            'env_name': value[1]
+        }
+        num = num + 1
+    return env_dict

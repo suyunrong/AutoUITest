@@ -57,23 +57,7 @@
                     <label class="control-label col-sm-3"
                            style="font-weight: inherit; font-size: small ">运行环境:</label>
                     <div class="col-sm-8">
-                        <select class="form-control" id="env_name" name="env_name">
-                            <option value="">自带环境</option>
-                            {% for foo in env %}
-                                <option value="{{ foo.base_url }}">{{ foo.env_name }}</option>
-                            {% endfor %}
-
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-sm-3"
-                           style="font-weight: inherit; font-size: small ">选择配置:</label>
-                    <div class="col-sm-8">
-                        <select class="form-control" id="config_name" name="config_name">
-
-                        </select>
+                        <select class="form-control" id="env_name" name="env_name"></select>
                     </div>
                 </div>
             </form>
@@ -204,7 +188,7 @@
                                     <button type="button"
                                             class="am-btn am-btn-default am-btn-xs am-text-secondary am-round"
                                             data-am-popover="{content: '运行', trigger: 'hover focus'}"
-                                            onclick="run_test('{{ foo.id }}', '/api/load_config/')">
+                                            onclick="run_test('{{ foo.id }}', '{% url 'load_env' %}')">
                                         <span class="am-icon-bug"></span>
                                     </button>
                                     <button type="button"
@@ -301,28 +285,24 @@
             });
         }
 
+        {# 执行用例 #}
         function run_test(index, url) {
-            var data = {
-                "mode": 'auto_load',
-            };
             $.ajax({
                 type: 'post',
                 url: url,
-                data: JSON.stringify(data),
                 contentType: "application/json",
                 success: function (data) {
-                    show_config(data);
+                    show_env(data);
                     $('#select_env').modal({
                         relatedTarget: this,
                         onConfirm: function () {
-                            post('/api/run_test/', {
+                            post('{% url 'run_test' %}', {
                                 'id': index,
-                                'env_name': $('#env_name').val(),
-                                'config': $('#config_name').val()
+                                'env_id': $('#env_name').val(),
                             })
                         },
                         onCancel: function () {
-                        }
+                        },
                     });
                 },
                 error: function () {
@@ -336,18 +316,14 @@
             $("input[name^='testcase']").prop("checked", isChecked);
         })
 
-        function show_config(config_info) {
-            config_info = config_info.split('replaceFlag');
-            var a = $('#config_name');
-            a.empty();
-            for (var i = 0; i < config_info.length; i++) {
-                if (config_info[i] !== "") {
-                    var value = config_info[i].split('^=');
-                    a.prepend("<option value='" + value[0] + "' >" + value[1] + "</option>")
-                }
-            }
-            a.prepend("<option value='' >无需配置</option>");
 
+        {# 加载环境 #}
+        function show_env(env_info) {
+            var env_select = $('#env_name');
+            env_select.empty();
+            $.each(env_info,function(key,value) {
+                env_select.append("<option value='" + value['id'] + "' >" + value['env_name'] + "</option>");
+            });
         }
     </script>
 {% endblock %}

@@ -27,6 +27,21 @@ function show_case(case_info, id) {
 
 }
 
+/* 动态改变环境信息 */
+function show_env(case_info, id) {
+    case_info = case_info.split('replaceFlag');
+    var a = $(id);
+    a.empty();
+    for (var i = 0; i < case_info.length; i++) {
+        if (case_info[i] !== "") {
+            var value = case_info[i].split('^=');
+            a.prepend("<option value='" + value[0] + "' >" + value[1] + "</option>")
+        }
+    }
+    a.prepend("<option value='' selected >单用例测试，无需依赖</option>");
+
+}
+
 /*表单信息异步传输*/
 function info_ajax(id, url) {
     var data = $(id).serializeJSON();

@@ -5,7 +5,8 @@ from .utils.pagination import get_pager_info
 from .models import ProjectInfo, ModuleInfo, TestCaseInfo, EnvInfo
 from .utils.operation import add_project_data, del_project_data, add_module_data, del_module_data, add_case_data, \
     choose_data, copy_case_data, del_case_data, add_env_data, del_env_data
-from .utils.common import get_ajax_msg, set_filter_session
+from .utils.common import get_ajax_msg, set_filter_session, load_env_info
+from .utils.runner import run_single_case
 import logging
 import json
 
@@ -272,5 +273,28 @@ def env_list(request, id):
                 'sum': pro_list[2],
             }
             return render(request, 'env_list.html', manage_info)
+    else:
+        return HttpResponseRedirect("/login/")
+
+
+def load_env(request):
+    if request.session.get('login_status'):
+        if request.is_ajax():
+            ajax_dict = load_env_info()
+            return JsonResponse(ajax_dict)
+        else:
+            logging.error('请求异常')
+            return JsonResponse(get_ajax_msg('sorry', '请求异常'))
+
+
+def run_test(request):
+    if request.session.get('login_status'):
+        if request.is_ajax():
+            pass
+        else:
+            case_id = request.POST.get('id')
+            env_id = request.POST.get('env_id')
+            summary = run_single_case(case_id, env_id)
+            return render(request, 'report_template.html', summary)
     else:
         return HttpResponseRedirect("/login/")

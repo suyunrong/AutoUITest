@@ -1,5 +1,5 @@
 from selenium.common.exceptions import NoSuchElementException
-
+import time
 
 def alert(driver, **kwargs):
     """
@@ -132,6 +132,8 @@ def mouse_click(driver, **kwargs):
         ele_pos = kwargs.get('ele_pos')
         ele = driver.find_element_by_xpath(ele_pos)
         ele.click()
+        time.sleep(float(kwargs.get('slepp_time')))
+
     except NoSuchElementException:
         raise Exception('NoSuchElement')
 
@@ -218,6 +220,7 @@ def send_keys(driver, **kwargs):
         page_oper_val = kwargs.get('page_oper_val')
         ele = driver.find_element_by_xpath(ele_pos)
         ele.send_keys(page_oper_val)
+        time.sleep(float(kwargs.get('slepp_time')))
     except NoSuchElementException:
         raise Exception('NoSuchElement')
 
@@ -229,5 +232,6 @@ def to_url(driver, **kwargs):
     :param kwargs:
     :return:
     """
-    url = kwargs.get('ele_pos')
+    url = kwargs.get('page_oper_val')
+    time.sleep(float(kwargs.get('slepp_time')))
     driver.get(url)
