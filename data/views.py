@@ -221,6 +221,8 @@ def edit_case(request, id=None):
             'project_data': ProjectInfo.objects.all().values('project_name').order_by('-create_time'),
             'module_data': ModuleInfo.objects.filter(belong_project__project_name=project_name)
                 .values('id', 'module_name').order_by('-create_time'),
+            'prepos_case': TestCaseInfo.objects.filter(belong_project__exact=project_name)
+                .values('id', 'case_name').order_by('-create_time')
         }
         return render(request, "edit_case.html", manage_info)
     else:

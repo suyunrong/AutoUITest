@@ -194,22 +194,21 @@ function add_case_ajax(type) {
     var caseInfo = $("#form_case_message").serializeJSON();
     var scriptInfo = $("#form_script_message").serializeJSON();
 
-    // 封装前置后置用例为list, [id, case_name]
     if ($('#prepos_case_id option:selected').val() === ''
             && $('#postpos_case_id option:selected').val() === '') {
             caseInfo['prepos_case'] = [];
             caseInfo['postpos_case'] = [];
         } else if ($('#prepos_case_id option:selected').val() !== ''
             && $('#postpos_case_id option:selected').val() === '') {
-            caseInfo['prepos_case'] = [$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()];
+            caseInfo['prepos_case'] = [$('#prepos_case_id').val()];
             caseInfo['postpos_case'] = [];
         } else if ($('#prepos_case_id option:selected').val() === ''
             && $('#postpos_case_id option:selected').val() !== '') {
             caseInfo['prepos_case'] = [];
-            caseInfo['postpos_case'] = [$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()];
+            caseInfo['postpos_case'] = [$('#postpos_case_id').val()];
         } else {
-            caseInfo['prepos_case'] = [$('#prepos_case_id').val(), $('#prepos_case_id option:selected').text()];
-            caseInfo['postpos_case'] = [$('#postpos_case_id').val(), $('#postpos_case_id option:selected').text()];
+            caseInfo['prepos_case'] = [$('#prepos_case_id').val()];
+            caseInfo['postpos_case'] = [$('#postpos_case_id').val()];
         }
 
     var testcase = {

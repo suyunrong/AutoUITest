@@ -142,13 +142,13 @@
             <dl class="am-icon-home" style="float: right;"> 当前位置： 项目管理 > <a href="#">项目列表</a></dl>
             <dl>
                 <button type="button" class="am-btn am-btn-danger am-round am-btn-xs am-icon-plus"
-                        onclick="location='{% url 'add_project' %}'">新增项目
+                        onclick="location='{% url 'add_project' %}'">&nbsp;新增项目
                 </button>
                 <button type="button" class="am-btn am-btn-primary am-round am-btn-xs am-icon-plus"
-                        data-toggle="modal" data-target="#bulk_uploadcase">批量导入
+                        data-toggle="modal" data-target="#bulk_uploadcase">&nbsp;批量导入
                 </button>
                 <button type="button" class="am-btn am-btn-danger am-round am-btn-xs am-icon-bug"
-                        onclick="run_test('batch', '/api/run_batch_test/', 'project')">运行
+                        onclick="run_test('batch', '/api/run_batch_test/', 'project')">&nbsp;运行
                 </button>
             </dl>
         </div>
@@ -176,11 +176,11 @@
                 <thead>
                 <tr class="am-success">
                     <th class="table-check"><input type="checkbox" id="select_all"/></th>
-                    <th class="table-title">序号</th>
+                    <th class="table-title" width="50px">序号</th>
                     <th class="table-type">项目名称</th>
-                    <th class="table-type">开发负责人</th>
-                    <th class="table-title">测试负责人</th>
-                    <th class="table-title">模块/用例</th>
+                    <th class="table-type" width="90px">开发负责人</th>
+                    <th class="table-title" width="90px">测试负责人</th>
+                    <th class="table-title" width="85px">模块/用例</th>
                     <th class="table-title">简要描述</th>
                     <th width="150px" class="table-date am-hide-sm-only">创建时间</th>
                     <th width="130px" class="table-set">操作</th>
@@ -239,7 +239,7 @@
 
             <div class="am-btn-group am-btn-group-xs">
                 <button type="button" class="am-btn am-btn-default" onclick="location='{% url 'add_project' %}'"><span
-                        class="am-icon-plus"></span> 新增
+                        class="am-icon-plus"></span>&nbsp;新增
                 </button>
             </div>
 

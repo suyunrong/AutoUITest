@@ -9,7 +9,7 @@
 
         <div class="listbiaoti am-cf">
             <ul class="am-icon-flag on"> 用例编辑</ul>
-            <dl class="am-icon-home" style="float: right;">当前位置： 用例管理 > <a href="#">新增用例</a></dl>
+            <dl class="am-icon-home" style="float: right;">当前位置： 用例管理 > <a href="#">用例编辑</a></dl>
         </div>
 
         <div class="am-tabs am-margin">
@@ -95,12 +95,16 @@
                                 <div class="input-group-addon" style="color: #0a628f">前置用例</div>
                                 <select id="prepos_case_id" name="prepos_case" class="form-control">
                                     {% ifequal case_info.prepos_case '[]' %}
-                                        <option value="">
-                                            单用例测试，无需依赖
-                                        </option>
+                                        <option value="">单用例测试，无需依赖</option>
                                     {% else %}
                                         <option value="{{ case_info.prepos_case|get_prepost_case_id }}">{{ case_info.prepos_case|get_prepost_case_name }}</option>
+                                        <option value="">单用例测试，无需依赖</option>
                                     {% endifequal %}
+                                    {% for foo in prepos_case %}
+                                        {% ifnotequal case_info.prepos_case|get_prepost_case_name foo.case_name %}
+                                            <option value="{{ foo.id }}">{{ foo.case_name }}</option>
+                                        {% endifnotequal %}
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -110,12 +114,16 @@
                                 <div class="input-group-addon" style="color: #0a628f">后置用例</div>
                                 <select id="postpos_case_id" name="postpos_case" class="form-control">
                                     {% ifequal case_info.postpos_case '[]' %}
-                                        <option value="">
-                                            单用例测试，无需依赖
-                                        </option>
+                                        <option value="">单用例测试，无需依赖</option>
                                     {% else %}
                                         <option value="{{ case_info.postpos_case|get_prepost_case_id }}">{{ case_info.postpos_case|get_prepost_case_name }}</option>
+                                        <option value="">单用例测试，无需依赖</option>
                                     {% endifequal %}
+                                    {% for foo in prepos_case %}
+                                        {% ifnotequal case_info.postpos_case|get_prepost_case_name foo.case_name %}
+                                            <option value="{{ foo.id }}">{{ foo.case_name }}</option>
+                                        {% endifnotequal %}
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -193,9 +201,6 @@
                 &laquo; &nbsp;
                 <button type="button" class="am-btn am-btn-success am-radius" onclick="add_case_ajax('edit')">点 击 提 交
                 </button>&nbsp;
-                &raquo; &nbsp;
-                <a type="submit" href="/api/add_config/" class="am-btn am-btn-secondary am-radius">新 增 配 置</a>
-
             </div>
         </div>
     </div>
@@ -203,7 +208,7 @@
 
         $(document).ready(function () {
             $("#is_execute").bootstrapSwitch();
-            auto_load('#form_case_message', '{% url 'choose' %}','#prepos_case_id,#postpos_case_id', 'case')
+            {#auto_load('#form_case_message', '{% url 'choose' %}','#prepos_case_id,#postpos_case_id', 'case')#}
         });
 
         $("#is_execute").on('switchChange.bootstrapSwitch', function (event, data) {

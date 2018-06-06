@@ -1,5 +1,6 @@
-from . import selenium_oper
 import unittest
+from execute import config
+import time
 
 data = {
         'scripts':[
@@ -32,9 +33,16 @@ data = {
     }
 
 
-class TestCase(unittest.TestCase):
-    pass
+# class TestCase(unittest.TestCase):
+#     pass
+#
+#
+# class TestSuite(unittest.TestSuite):
+#     pass
 
 
-class TestSuite(unittest.TestSuite):
-    pass
+driver = config.driver
+config.max_browser(driver)
+driver.get('http://www.baidu.com')
+time.sleep(1)
+config.quit_browser(driver)

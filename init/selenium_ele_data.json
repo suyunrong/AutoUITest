@@ -1,0 +1,222 @@
+[
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 1,
+    "fields":{
+      "ele_name": "alert",
+      "ele_desc": "Alert弹窗",
+      "create_time": "2018-06-06 09:37:55.729513",
+      "update_time": "2018-06-06 09:37:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 2,
+    "fields":{
+      "ele_name": "back",
+      "ele_desc": "浏览器后退",
+      "create_time": "2018-06-06 09:38:55.729513",
+      "update_time": "2018-06-06 09:38:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 3,
+    "fields":{
+      "ele_name": "checkbox",
+      "ele_desc": "多选框",
+      "create_time": "2018-06-06 09:39:55.729513",
+      "update_time": "2018-06-06 09:39:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 4,
+    "fields":{
+      "ele_name": "clear",
+      "ele_desc": "清除文本",
+      "create_time": "2018-06-06 09:40:55.729513",
+      "update_time": "2018-06-06 09:40:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 5,
+    "fields":{
+      "ele_name": "enter",
+      "ele_desc": "Enter键",
+      "create_time": "2018-06-06 09:41:55.729513",
+      "update_time": "2018-06-06 09:41:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 6,
+    "fields":{
+      "ele_name": "execute_script",
+      "ele_desc": "执行javascript语句",
+      "create_time": "2018-06-06 09:42:55.729513",
+      "update_time": "2018-06-06 09:42:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 7,
+    "fields":{
+      "ele_name": "forward",
+      "ele_desc": "浏览器前进",
+      "create_time": "2018-06-06 09:43:55.729513",
+      "update_time": "2018-06-06 09:43:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 8,
+    "fields":{
+      "ele_name": "get_text",
+      "ele_desc": "获取各标签文本内容",
+      "create_time": "2018-06-06 09:44:55.729513",
+      "update_time": "2018-06-06 09:44:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 9,
+    "fields":{
+      "ele_name": "get_title",
+      "ele_desc": "获取页面title",
+      "create_time": "2018-06-06 09:45:55.729513",
+      "update_time": "2018-06-06 09:45:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 10,
+    "fields":{
+      "ele_name": "get_url",
+      "ele_desc": "获取页面URL",
+      "create_time": "2018-06-06 09:46:55.729513",
+      "update_time": "2018-06-06 09:46:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 11,
+    "fields":{
+      "ele_name": "is_element_exist",
+      "ele_desc": "判断一个元素是否存在",
+      "create_time": "2018-06-06 09:47:55.729513",
+      "update_time": "2018-06-06 09:47:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 12,
+    "fields":{
+      "ele_name": "is_elements_exist",
+      "ele_desc": "判断一组元素是否存在",
+      "create_time": "2018-06-06 09:48:55.729513",
+      "update_time": "2018-06-06 09:48:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 13,
+    "fields":{
+      "ele_name": "mouse_click",
+      "ele_desc": "鼠标单击",
+      "create_time": "2018-06-06 09:49:55.729513",
+      "update_time": "2018-06-06 09:49:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 14,
+    "fields":{
+      "ele_name": "mouse_context_click",
+      "ele_desc": "鼠标右键单击",
+      "create_time": "2018-06-06 09:50:55.729513",
+      "update_time": "2018-06-06 09:50:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 15,
+    "fields":{
+      "ele_name": "mouse_double_click",
+      "ele_desc": "鼠标双击",
+      "create_time": "2018-06-06 09:51:55.729513",
+      "update_time": "2018-06-06 09:51:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 16,
+    "fields":{
+      "ele_name": "mouse_drag_and_drop",
+      "ele_desc": "鼠标拖动",
+      "create_time": "2018-06-06 09:52:55.729513",
+      "update_time": "2018-06-06 09:52:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 17,
+    "fields":{
+      "ele_name": "mouse_move_to_element",
+      "ele_desc": "鼠标悬停",
+      "create_time": "2018-06-06 09:53:55.729513",
+      "update_time": "2018-06-06 09:53:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 18,
+    "fields":{
+      "ele_name": "radio",
+      "ele_desc": "单选框",
+      "create_time": "2018-06-06 09:54:55.729513",
+      "update_time": "2018-06-06 09:54:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 19,
+    "fields":{
+      "ele_name": "refresh",
+      "ele_desc": "刷新页面",
+      "create_time": "2018-06-06 09:55:55.729513",
+      "update_time": "2018-06-06 09:55:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 20,
+    "fields":{
+      "ele_name": "select",
+      "ele_desc": "选中下拉文本",
+      "create_time": "2018-06-06 09:56:55.729513",
+      "update_time": "2018-06-06 09:56:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 21,
+    "fields":{
+      "ele_name": "send_keys",
+      "ele_desc": "输入文本",
+      "create_time": "2018-06-06 09:57:55.729513",
+      "update_time": "2018-06-06 09:57:55.729513"
+    }
+  },
+  {
+    "model": "data.SeleniumEleInfo",
+    "pk": 22,
+    "fields":{
+      "ele_name": "to_url",
+      "ele_desc": "访问URL",
+      "create_time": "2018-06-06 09:58:55.729513",
+      "update_time": "2018-06-06 09:58:55.729513"
+    }
+  }
+]
